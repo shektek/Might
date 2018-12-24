@@ -8,8 +8,13 @@
 class QtHost : public AppHost
 {
     private:
+        int _argc;
+        char **_argv;
+
         QApplication *_qtApp;
         RenderQt *_mainWindow;
+
+        bool _running;
 
     public:
         QtHost();
