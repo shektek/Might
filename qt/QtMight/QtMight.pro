@@ -29,8 +29,10 @@ SOURCES += \
     ../../RenderConsole.cpp \
     ../../Tile.cpp \
     ../../Unit.cpp \
-    renderqt.cpp \
-    ../../ConsoleHost.cpp
+    ../../ConsoleHost.cpp \
+    ../../ArmyFactory.cpp \
+    QtHost.cpp \
+    RenderQt.cpp
 
 OTHER_FILES += \
     ../../plan.txt \
@@ -50,9 +52,11 @@ HEADERS += \
     ../../Tile.h \
     ../../Unit.h \
     ../../OrdinalPosition.h \
-    renderqt.h \
     ../../AppHost.h \
-    ../../ConsoleHost.h
+    ../../ConsoleHost.h \
+    ../../ArmyFactory.h \
+    QtHost.h \
+    RenderQt.h
 
 FORMS += \
     renderqt.ui

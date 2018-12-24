@@ -19,9 +19,14 @@ class GameMaster
 		Unit *_currentSelected;
 
 	public:
+        GameMaster();
 		GameMaster(Player *left, Player *right);
 
+        //add players
+        bool AddPlayer(Player *newPlayer);
+
 		//arrange units, apply player bonuses, etc.
+        void PrepareRound(BattleMap *map, ArrangementStrategy leftArrangement, ArrangementStrategy rightArrangement);
 		void PrepareRound(BattleMap *map, Army *left, Army *right, ArrangementStrategy leftArrangement, ArrangementStrategy rightArrangement);
 
 		//set this unit as the current selection
@@ -33,6 +38,7 @@ class GameMaster
 		//determine who starts the next round
 		std::vector<Player*> GetInitiativeOrder();
 
+        //apply end of round rules
 		void EndRound();
 };
 

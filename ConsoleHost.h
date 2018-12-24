@@ -18,11 +18,20 @@ class ConsoleHost : public AppHost
         RenderConsole *_consoleRender;
         ControlConsole *_consoleControl;
         bool _running;
+        GameMaster *_game;
+
+        //debug stuff
+        bool _testPlayers;
+        bool _testArmies;
+        bool _testMap;
+        int _mapWidth;
+        int _mapHeight;
 
     public:
         ConsoleHost();
+        virtual ~ConsoleHost();
 
-        bool Init();
+        bool Init(int argc, char **argv);
         void Exec();
         void Quit();
 };

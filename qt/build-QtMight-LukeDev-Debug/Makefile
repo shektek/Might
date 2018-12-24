@@ -56,7 +56,10 @@ SOURCES       = ../../Army.cpp \
 		../../RenderConsole.cpp \
 		../../Tile.cpp \
 		../../Unit.cpp \
-		../QtMight/renderqt.cpp moc_renderqt.cpp
+		../../ConsoleHost.cpp \
+		../../ArmyFactory.cpp \
+		../QtMight/QtHost.cpp \
+		../QtMight/RenderQt.cpp moc_RenderQt.cpp
 OBJECTS       = Army.o \
 		BattleMap.o \
 		ControlConsole.o \
@@ -68,8 +71,11 @@ OBJECTS       = Army.o \
 		RenderConsole.o \
 		Tile.o \
 		Unit.o \
-		renderqt.o \
-		moc_renderqt.o
+		ConsoleHost.o \
+		ArmyFactory.o \
+		QtHost.o \
+		RenderQt.o \
+		moc_RenderQt.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -135,7 +141,10 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../../RenderConsole.cpp \
 		../../Tile.cpp \
 		../../Unit.cpp \
-		../QtMight/renderqt.cpp
+		../../ConsoleHost.cpp \
+		../../ArmyFactory.cpp \
+		../QtMight/QtHost.cpp \
+		../QtMight/RenderQt.cpp
 QMAKE_TARGET  = QtMight
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = QtMight
@@ -292,7 +301,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .tmp/QtMight1.0.0 || mkdir -p .tmp/QtMight1.0.0
-	$(COPY_FILE) --parents $(DIST) .tmp/QtMight1.0.0/ && $(COPY_FILE) --parents ../../Army.h ../../ArrangementStrategy.h ../../BattleMap.h ../../ControlConsole.h ../../GameMaster.h ../../NavigableGrid.h ../../Player.h ../../Point2D.h ../../RenderConsole.h ../../RenderConsoleColours.h ../../Tile.h ../../Unit.h ../../OrdinalPosition.h ../QtMight/renderqt.h .tmp/QtMight1.0.0/ && $(COPY_FILE) --parents ../../Army.cpp ../../BattleMap.cpp ../../ControlConsole.cpp ../../GameMaster.cpp ../../main.cpp ../../NavigableGrid.cpp ../../Player.cpp ../../Point2D.cpp ../../RenderConsole.cpp ../../Tile.cpp ../../Unit.cpp ../QtMight/renderqt.cpp .tmp/QtMight1.0.0/ && $(COPY_FILE) --parents ../QtMight/renderqt.ui .tmp/QtMight1.0.0/ && (cd `dirname .tmp/QtMight1.0.0` && $(TAR) QtMight1.0.0.tar QtMight1.0.0 && $(COMPRESS) QtMight1.0.0.tar) && $(MOVE) `dirname .tmp/QtMight1.0.0`/QtMight1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/QtMight1.0.0
+	$(COPY_FILE) --parents $(DIST) .tmp/QtMight1.0.0/ && $(COPY_FILE) --parents ../../Army.h ../../ArrangementStrategy.h ../../BattleMap.h ../../ControlConsole.h ../../GameMaster.h ../../NavigableGrid.h ../../Player.h ../../Point2D.h ../../RenderConsole.h ../../RenderConsoleColours.h ../../Tile.h ../../Unit.h ../../OrdinalPosition.h ../../AppHost.h ../../ConsoleHost.h ../../ArmyFactory.h ../QtMight/QtHost.h ../QtMight/RenderQt.h .tmp/QtMight1.0.0/ && $(COPY_FILE) --parents ../../Army.cpp ../../BattleMap.cpp ../../ControlConsole.cpp ../../GameMaster.cpp ../../main.cpp ../../NavigableGrid.cpp ../../Player.cpp ../../Point2D.cpp ../../RenderConsole.cpp ../../Tile.cpp ../../Unit.cpp ../../ConsoleHost.cpp ../../ArmyFactory.cpp ../QtMight/QtHost.cpp ../QtMight/RenderQt.cpp .tmp/QtMight1.0.0/ && $(COPY_FILE) --parents ../QtMight/renderqt.ui .tmp/QtMight1.0.0/ && (cd `dirname .tmp/QtMight1.0.0` && $(TAR) QtMight1.0.0.tar QtMight1.0.0 && $(COMPRESS) QtMight1.0.0.tar) && $(MOVE) `dirname .tmp/QtMight1.0.0`/QtMight1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/QtMight1.0.0
 
 
 clean:compiler_clean 
@@ -315,11 +324,12 @@ check: first
 
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_header_make_all: moc_renderqt.cpp
+compiler_moc_header_make_all: moc_RenderQt.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_renderqt.cpp
-moc_renderqt.cpp: ../QtMight/renderqt.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/luke/src/might/qt/QtMight -I/usr/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/4.9 -I/usr/include/x86_64-linux-gnu/c++/4.9 -I/usr/include/c++/4.9/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../QtMight/renderqt.h -o moc_renderqt.cpp
+	-$(DEL_FILE) moc_RenderQt.cpp
+moc_RenderQt.cpp: ../../Point2D.h \
+		../QtMight/RenderQt.h
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/luke/src/might/qt/QtMight -I/usr/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/4.9 -I/usr/include/x86_64-linux-gnu/c++/4.9 -I/usr/include/c++/4.9/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../QtMight/RenderQt.h -o moc_RenderQt.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -377,20 +387,21 @@ GameMaster.o: ../../GameMaster.cpp ../../GameMaster.h \
 		../../OrdinalPosition.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o GameMaster.o ../../GameMaster.cpp
 
-main.o: ../../main.cpp ../../Point2D.h \
-		../../Unit.h \
-		../../ArrangementStrategy.h \
+main.o: ../../main.cpp ../../ConsoleHost.h \
+		../../GameMaster.h \
+		../../Player.h \
 		../../Army.h \
+		../../Unit.h \
+		../../Point2D.h \
 		../../BattleMap.h \
 		../../Tile.h \
+		../../ArrangementStrategy.h \
 		../../NavigableGrid.h \
 		../../OrdinalPosition.h \
-		../../Player.h \
-		../../GameMaster.h \
+		../../AppHost.h \
 		../../RenderConsole.h \
 		../../RenderConsoleColours.h \
-		../../ControlConsole.h \
-		../QtMight/renderqt.h
+		../../ControlConsole.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../main.cpp
 
 NavigableGrid.o: ../../NavigableGrid.cpp ../../NavigableGrid.h \
@@ -432,12 +443,41 @@ Unit.o: ../../Unit.cpp ../../Unit.h \
 		../../Point2D.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Unit.o ../../Unit.cpp
 
-renderqt.o: ../QtMight/renderqt.cpp ../QtMight/renderqt.h \
-		ui_renderqt.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o renderqt.o ../QtMight/renderqt.cpp
+ConsoleHost.o: ../../ConsoleHost.cpp ../../ConsoleHost.h \
+		../../GameMaster.h \
+		../../Player.h \
+		../../Army.h \
+		../../Unit.h \
+		../../Point2D.h \
+		../../BattleMap.h \
+		../../Tile.h \
+		../../ArrangementStrategy.h \
+		../../NavigableGrid.h \
+		../../OrdinalPosition.h \
+		../../AppHost.h \
+		../../RenderConsole.h \
+		../../RenderConsoleColours.h \
+		../../ControlConsole.h \
+		../../ArmyFactory.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ConsoleHost.o ../../ConsoleHost.cpp
 
-moc_renderqt.o: moc_renderqt.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_renderqt.o moc_renderqt.cpp
+ArmyFactory.o: ../../ArmyFactory.cpp ../../ArmyFactory.h \
+		../../Army.h \
+		../../Unit.h \
+		../../Point2D.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ArmyFactory.o ../../ArmyFactory.cpp
+
+QtHost.o: ../QtMight/QtHost.cpp ../QtMight/QtHost.h \
+		../../AppHost.h \
+		../QtMight/RenderQt.h \
+		../../Point2D.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o QtHost.o ../QtMight/QtHost.cpp
+
+RenderQt.o: ../QtMight/RenderQt.cpp ui_renderqt.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o RenderQt.o ../QtMight/RenderQt.cpp
+
+moc_RenderQt.o: moc_RenderQt.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_RenderQt.o moc_RenderQt.cpp
 
 ####### Install
 

@@ -1,5 +1,5 @@
 #include <QPainter>
-#include "renderqt.h"
+#include "RenderQt.h"
 #include "ui_renderqt.h"
 
 RenderQt::RenderQt(QWidget *parent) :
