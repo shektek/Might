@@ -1,0 +1,15 @@
+PROOF OF CONCEPT
+-Arrange 8x14 map
+-Place units on either side
+-Move units around
+-Add basic attacks
+done!
+
+NEXT
+-Limit movement to within radius (floodfill to create a navigable grid)
+-Animate movement
+-Add ranged attacks
+
+Render console -> draw navigable grid for unit --DONE
+Control console -> take grid, process input, move unit
+
