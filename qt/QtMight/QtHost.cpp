@@ -12,6 +12,7 @@ QtHost::~QtHost()
 
 bool QtHost::Init(int argc, char **argv)
 {
+    //these need to be kept for QT
     _argc = argc;
     _argv = new char*[argc];
     for(int i = 0; i < argc; i++)
