@@ -48,10 +48,10 @@ bool ConsoleHost::Init(int argc, char **argv)
     return _running;
 }
 
-void ConsoleHost::Exec()
+void ConsoleHost::Exec(GameMaster *game)
 {
     //begin the game
-    _game = new GameMaster();
+    _game = game;
     Army *leftarmy = nullptr;
     Army *rightarmy = nullptr;
     Player *leftplayer = nullptr;

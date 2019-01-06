@@ -35,7 +35,9 @@ class BattleMap
 	public:
 		BattleMap();
 		BattleMap(short width, short height);
+        BattleMap(short width, short height, short tileWidth, short tileHeight);
 		BattleMap(short width, short height, Army *leftArmy, Army *rightArmy);
+        BattleMap(short width, short height, short tileWidth, short tileHeight, Army *leftArmy, Army *rightArmy);
 		BattleMap(std::vector<std::vector<Tile> > map, Army *leftArmy, Army *rightArmy);
 		BattleMap(const BattleMap &other);
 		BattleMap &operator=(const BattleMap &other);
@@ -64,6 +66,9 @@ class BattleMap
         inline std::vector<std::vector<Tile> > GetRawArray() const { return _map; }
 		inline short GetHeight() const { return _height; }
 		inline short GetWidth() const { return _width; }
+
+        //Resize the tiles and adjust their position
+        void RescaleTiles(short newWidth, short newHeight);
 };
 
 #endif

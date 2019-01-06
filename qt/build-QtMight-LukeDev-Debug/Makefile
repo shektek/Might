@@ -59,7 +59,8 @@ SOURCES       = ../../Army.cpp \
 		../../ConsoleHost.cpp \
 		../../ArmyFactory.cpp \
 		../QtMight/QtHost.cpp \
-		../QtMight/RenderQt.cpp moc_RenderQt.cpp
+		../QtMight/RenderQt.cpp moc_QtHost.cpp \
+		moc_RenderQt.cpp
 OBJECTS       = Army.o \
 		BattleMap.o \
 		ControlConsole.o \
@@ -75,6 +76,7 @@ OBJECTS       = Army.o \
 		ArmyFactory.o \
 		QtHost.o \
 		RenderQt.o \
+		moc_QtHost.o \
 		moc_RenderQt.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
@@ -324,10 +326,32 @@ check: first
 
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_header_make_all: moc_RenderQt.cpp
+compiler_moc_header_make_all: moc_QtHost.cpp moc_RenderQt.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_RenderQt.cpp
+	-$(DEL_FILE) moc_QtHost.cpp moc_RenderQt.cpp
+moc_QtHost.cpp: ../../AppHost.h \
+		../../GameMaster.h \
+		../../Player.h \
+		../../Army.h \
+		../../Unit.h \
+		../../Point2D.h \
+		../../BattleMap.h \
+		../../Tile.h \
+		../../ArrangementStrategy.h \
+		../../NavigableGrid.h \
+		../../OrdinalPosition.h \
+		../QtMight/RenderQt.h \
+		../QtMight/QtHost.h
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/luke/src/might/qt/QtMight -I/usr/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/4.9 -I/usr/include/x86_64-linux-gnu/c++/4.9 -I/usr/include/c++/4.9/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../QtMight/QtHost.h -o moc_QtHost.cpp
+
 moc_RenderQt.cpp: ../../Point2D.h \
+		../../NavigableGrid.h \
+		../../Army.h \
+		../../Unit.h \
+		../../Tile.h \
+		../../OrdinalPosition.h \
+		../../BattleMap.h \
+		../../ArrangementStrategy.h \
 		../QtMight/RenderQt.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/luke/src/might/qt/QtMight -I/usr/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/4.9 -I/usr/include/x86_64-linux-gnu/c++/4.9 -I/usr/include/c++/4.9/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../QtMight/RenderQt.h -o moc_RenderQt.cpp
 
@@ -401,7 +425,9 @@ main.o: ../../main.cpp ../../ConsoleHost.h \
 		../../AppHost.h \
 		../../RenderConsole.h \
 		../../RenderConsoleColours.h \
-		../../ControlConsole.h
+		../../ControlConsole.h \
+		../QtMight/QtHost.h \
+		../QtMight/RenderQt.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../main.cpp
 
 NavigableGrid.o: ../../NavigableGrid.cpp ../../NavigableGrid.h \
@@ -469,12 +495,34 @@ ArmyFactory.o: ../../ArmyFactory.cpp ../../ArmyFactory.h \
 
 QtHost.o: ../QtMight/QtHost.cpp ../QtMight/QtHost.h \
 		../../AppHost.h \
+		../../GameMaster.h \
+		../../Player.h \
+		../../Army.h \
+		../../Unit.h \
+		../../Point2D.h \
+		../../BattleMap.h \
+		../../Tile.h \
+		../../ArrangementStrategy.h \
+		../../NavigableGrid.h \
+		../../OrdinalPosition.h \
 		../QtMight/RenderQt.h \
-		../../Point2D.h
+		../../ArmyFactory.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o QtHost.o ../QtMight/QtHost.cpp
 
-RenderQt.o: ../QtMight/RenderQt.cpp ui_renderqt.h
+RenderQt.o: ../QtMight/RenderQt.cpp ../QtMight/RenderQt.h \
+		../../Point2D.h \
+		../../NavigableGrid.h \
+		../../Army.h \
+		../../Unit.h \
+		../../Tile.h \
+		../../OrdinalPosition.h \
+		../../BattleMap.h \
+		../../ArrangementStrategy.h \
+		ui_renderqt.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o RenderQt.o ../QtMight/RenderQt.cpp
+
+moc_QtHost.o: moc_QtHost.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_QtHost.o moc_QtHost.cpp
 
 moc_RenderQt.o: moc_RenderQt.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_RenderQt.o moc_RenderQt.cpp

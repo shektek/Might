@@ -5,11 +5,8 @@ PROOF OF CONCEPT
 -Add basic attacks
 done!
 
+MOVEMENT PHASE
+-Use Qt to display floodfill tiles
+-Fix the floodfill algorithm
+
 NEXT
--Limit movement to within radius (floodfill to create a navigable grid)
--Animate movement
--Add ranged attacks
-
-Render console -> draw navigable grid for unit --DONE
-Control console -> take grid, process input, move unit
-

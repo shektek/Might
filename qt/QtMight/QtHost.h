@@ -5,8 +5,10 @@
 #include <QApplication>
 #include "RenderQt.h"
 
-class QtHost : public AppHost
+class QtHost : public QObject, public AppHost
 {
+        Q_OBJECT
+
     private:
         int _argc;
         char **_argv;
@@ -14,15 +16,24 @@ class QtHost : public AppHost
         QApplication *_qtApp;
         RenderQt *_mainWindow;
 
+        GameMaster *_game;
         bool _running;
+        short _mapWidth;
+        short _mapHeight;
 
     public:
         QtHost();
-        ~QtHost();
+        virtual ~QtHost();
 
         bool Init(int argc, char **argv);
-        void Exec();
+        void Exec(GameMaster *game);
         void Quit();
+
+        void GameLoop();
+
+    signals:
+        void MapChanged(BattleMap newMap);
+        void SubmapChanged(NavigableGrid newSubmap);
 };
 
 #endif // QTHOST_H

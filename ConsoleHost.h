@@ -32,7 +32,7 @@ class ConsoleHost : public AppHost
         virtual ~ConsoleHost();
 
         bool Init(int argc, char **argv);
-        void Exec();
+        void Exec(GameMaster *game);
         void Quit();
 };
 

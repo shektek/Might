@@ -1,3 +1,4 @@
+
 #include "BattleMap.h"
 
 BattleMap::BattleMap()
@@ -9,31 +10,41 @@ BattleMap::BattleMap()
 }
 
 BattleMap::BattleMap(short width, short height)
-	: BattleMap()
-{
-	_width = width;
-	_height = height;
-	_map.resize(_width);
-	for(int i = 0; i < _width; i++)
-	{
-		_map[i].resize(_height);
-	}
+    : BattleMap(width, height, 1, 1)
+{	
+}
 
-	for(int y = height-1; y >= 0; y--)
-	{
-		for(int x = 0; x < width; x++)
-		{
-            _map[x][y] = Tile(Point2D(x, y), 1, 1);
+BattleMap::BattleMap(short width, short height, short tileWidth, short tileHeight)
+    : BattleMap()
+{
+    _width = width;
+    _height = height;
+    _map.resize(_width);
+    for(int i = 0; i < _width; i++)
+    {
+        _map[i].resize(_height);
+    }
+
+    for(int y = height-1; y >= 0; y--)
+    {
+        for(int x = 0; x < width; x++)
+        {
+            _map[x][y] = Tile(Point2D(x*tileWidth, y*tileHeight), tileWidth, tileHeight);
             //_map[x][y].SetPosition(x, y);
-		}
-	}
+        }
+    }
 }
 
 BattleMap::BattleMap(short width, short height, Army *leftArmy, Army *rightArmy)
-	: BattleMap(width, height)
+    : BattleMap(width, height, 1, 1, leftArmy, rightArmy)
 {
-	_leftArmy = leftArmy;
-	_rightArmy = rightArmy;
+}
+
+BattleMap::BattleMap(short width, short height, short tileWidth, short tileHeight, Army *leftArmy, Army *rightArmy)
+    : BattleMap(width, height, tileWidth, tileHeight)
+{
+    _leftArmy = leftArmy;
+    _rightArmy = rightArmy;
 }
 
 BattleMap::BattleMap(std::vector<std::vector<Tile> > map, Army *leftArmy, Army *rightArmy)
@@ -120,7 +131,7 @@ NavigableGrid BattleMap::CreateFloodFillSubmap(Point2D position, short radius)
 
     //erase empty columns
     int last_i = 0;
-    for(int i = 0, j = 0; i < kill.size(); i++, j++)
+    for(unsigned int i = 0, j = 0; i < kill.size(); i++, j++)
     {
         int this_i = kill[i].column;
 
@@ -405,3 +416,15 @@ void BattleMap::MoveUnitToPosition(Unit *unit, Point2D position)
     }
 }
 
+
+void BattleMap::RescaleTiles(short newWidth, short newHeight)
+{
+    for(int i = 0; i < _width; i++)
+    {
+        for(int j = 0; j < _height; j++)
+        {
+            _map[i][j].SetSize(newWidth, newHeight);
+            _map[i][j].SetPosition(i * newWidth, j * newHeight);
+        }
+    }
+}

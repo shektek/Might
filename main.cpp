@@ -1,5 +1,6 @@
+//#define CONSOLE_MIGHT
 #ifdef CONSOLE_MIGHT
-    #include "ConsoleHost.h"
+    #include "../../ConsoleHost.h"
 #else
     #include "QtHost.h"
 #endif
@@ -11,7 +12,7 @@ int main(int argc, char **argv)
     AppHost *app = new QtHost();
 
     if(app->Init(argc, argv))
-        app->Exec();
+        app->Exec(new GameMaster());
 
     app->Quit();
 
