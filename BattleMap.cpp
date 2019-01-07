@@ -11,7 +11,7 @@ BattleMap::BattleMap()
 
 BattleMap::BattleMap(short width, short height)
     : BattleMap(width, height, 1, 1)
-{	
+{
 }
 
 BattleMap::BattleMap(short width, short height, short tileWidth, short tileHeight)

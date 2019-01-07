@@ -1,10 +1,10 @@
-CC=g++
+CC=g++ -g
 CFLAGS=-std=c++11 -I.
 LDFLAGS=-lncurses
 SRCDIR = ./
-DEPS = $(SRCDIR)Point2D.h $(SRCDIR)Tile.h $(SRCDIR)Unit.h $(SRCDIR)ArrangementStrategy.h $(SRCDIR)Army.h $(SRCDIR)BattleMap.h $(SRCDIR)RenderConsole.h $(SRCDIR)ControlConsole.h $(SRCDIR)GameMaster.h $(SRCDIR)Player.h $(SRCDIR)RenderConsoleColours.h
+DEPS = $(SRCDIR)Point2D.h $(SRCDIR)Tile.h $(SRCDIR)Unit.h $(SRCDIR)ArrangementStrategy.h $(SRCDIR)Army.h $(SRCDIR)BattleMap.h $(SRCDIR)RenderConsole.h $(SRCDIR)ControlConsole.h $(SRCDIR)GameMaster.h $(SRCDIR)Player.h $(SRCDIR)RenderConsoleColours.h $(SRCDIR)OrdinalPosition.h $(SRCDIR)AppHost.h $(SRCDIR)ArmyFactory.h $(SRCDIR)ConsoleHost.h $(SRCDIR)NavigableGrid.h
 OBJDIR = ./obj/
-OBJ = $(OBJDIR)Point2D.o $(OBJDIR)Tile.o $(OBJDIR)Unit.o $(OBJDIR)Army.o $(OBJDIR)BattleMap.o $(OBJDIR)main.o $(OBJDIR)RenderConsole.o $(OBJDIR)ControlConsole.o $(OBJDIR)GameMaster.o $(OBJDIR)Player.o
+OBJ = $(OBJDIR)Point2D.o $(OBJDIR)Tile.o $(OBJDIR)Unit.o $(OBJDIR)Army.o $(OBJDIR)BattleMap.o $(OBJDIR)main.o $(OBJDIR)RenderConsole.o $(OBJDIR)ControlConsole.o $(OBJDIR)GameMaster.o $(OBJDIR)Player.o $(OBJDIR)ConsoleHost.o $(OBJDIR)ArmyFactory.o $(OBJDIR)NavigableGrid.o
 BINDIR = ./bin/
 PROJECT = might
 
@@ -13,3 +13,6 @@ $(OBJDIR)%.o: %.cpp $(DEPS)
 
 $(BINDIR)$(PROJECT): $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
+
+clean:
+	rm -f $(OBJ)

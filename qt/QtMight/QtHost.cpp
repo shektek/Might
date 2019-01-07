@@ -30,8 +30,8 @@ bool QtHost::Init(int argc, char **argv)
     _qtApp = new QApplication(_argc, _argv);
     _mainWindow = new RenderQt();
 
-    qRegisterMetaType<BattleMap>();
-    qRegisterMetaType<NavigableGrid>();
+    //qRegisterMetaType<BattleMap>();
+    //qRegisterMetaType<NavigableGrid>();
     QObject::connect(this, SIGNAL(MapChanged(BattleMap)),
                          _mainWindow, SLOT(SetBattleMap(BattleMap)));
     QObject::connect(this, SIGNAL(SubmapChanged(NavigableGrid)),

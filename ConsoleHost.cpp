@@ -92,7 +92,7 @@ void ConsoleHost::Exec(GameMaster *game)
                 NavigableGrid submap = map.CreateFloodFillSubmap(sortedUnits[i]->Position, sortedUnits[i]->Speed);
 
                 _consoleRender->DrawMap(&map);
-                _consoleRender->DrawMapHighlights(submap);
+                _consoleRender->DrawMapHighlights(&submap);
                 _consoleRender->DrawMapCoordsBorder(&map);
                 _consoleRender->DrawPlayerUnitInfo(player[curPlayer], sortedUnits[i]);
                 mvwprintw(_consoleWindow, 23, 1, "Command > ");

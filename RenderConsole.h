@@ -15,7 +15,7 @@ class RenderConsole
 		WINDOW *_window;
 		BattleMap *_map;
 
-        std::vector<std::vector<Tile*> > GenerateRadialField(Point2D origin, int radius);
+	        std::vector<std::vector<Tile*> > GenerateRadialField(Point2D origin, int radius);
 		char GetTerrainShape(int x, int y);
 		char GetUnitShape(int x, int y);
 		int GetTerrainColour(int x, int y);
@@ -24,7 +24,7 @@ class RenderConsole
 	public:
 		RenderConsole(WINDOW *consoleWindow);
 		void DrawMap(BattleMap *map);
-        void DrawMapHighlights(NavigableGrid submap);
+        	void DrawMapHighlights(NavigableGrid *submap);
 		void DrawMapCoordsBorder(BattleMap *map);
 		void DrawPlayerUnitInfo(Player *player, Unit *unit);
 };

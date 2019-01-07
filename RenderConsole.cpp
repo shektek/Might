@@ -27,14 +27,14 @@ void RenderConsole::DrawMap(BattleMap *map)
 
 	for(int y = 0; y < map->GetHeight(); y++)
 	{
-        for(int x = 0, xc = 0; x < map->GetWidth(); x++, xc+=1) //xc = x with spacing for console render only
+	        for(int x = 0, xc = 0; x < map->GetWidth(); x++, xc+=1) //xc = x with spacing for console render only
 		{
 			char shape;
 			int colour = 0;
 			if(map->IsTileAccessible(x, y))
-            {
-                shape = GetTerrainShape(x, y);
-                colour = GetTerrainColour(x, y);
+        		{
+                		shape = GetTerrainShape(x, y);
+                		colour = GetTerrainColour(x, y);
 			}
 			else
 			{
@@ -49,16 +49,16 @@ void RenderConsole::DrawMap(BattleMap *map)
 	}
 }
 
-void RenderConsole::DrawMapHighlights(NavigableGrid submap)
+void RenderConsole::DrawMapHighlights(NavigableGrid *submap)
 {
-    int mapHeight = submap.GetHeight();
-    int mapWidth = submap.GetWidth();
+    int mapHeight = submap->GetHeight();
+    int mapWidth = submap->GetWidth();
 
     for(int y = 0; y < mapHeight; y++)
     {
         for(int x = 0; x < mapWidth; x++)
         {
-            TileFloodNode *floodtile = submap.GetTile(x, y);
+            TileFloodNode *floodtile = submap->GetTile(x, y);
             OrdinalPosition loc = _map->GetArrayLocation(floodtile->tile->GlobalBottomLeft());
 
             char shape = '.';
