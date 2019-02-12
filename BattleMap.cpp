@@ -165,8 +165,6 @@ NavigableGrid BattleMap::CreateFloodFillSubmap(Point2D position, short radius)
 
 void BattleMap::FloodFill(Tile *currentOrigin, short remainingRadius, TileFloodNode *prev)
 {
-    --remainingRadius;
-
     //first ensure this exists in the battlemap
     OrdinalPosition battlemapOrigin = GetArrayLocation(currentOrigin->GlobalBottomLeft());
     OrdinalPosition origin = GetFloodArrayLocation(_currentSubmap, currentOrigin->GlobalBottomLeft());
@@ -187,7 +185,29 @@ void BattleMap::FloodFill(Tile *currentOrigin, short remainingRadius, TileFloodN
         //-1 -1 -1
 
         if(remainingRadius > 0)
-        {            
+        {
+		auto Fill = [this](int thisColumn, int thisRow, int remainingRadius)
+		{
+			if(thisColumn >= 0 && thisRow >= 0 &&
+			    thisColumn < this->_currentSubmap.size() && thisRow < this->_currentSubmap[thisColumn].size() &&
+			    this->_currentSubmap[thisColumn][thisRow]->mapped == false &&
+			    this->_currentSubmap[thisColumn][thisRow]->tile->Occupied == false)
+				FloodFill(this->_currentSubmap[thisColumn][thisRow]->tile, remainingRadius-1, this->_currentSubmap[thisColumn][thisRow]);
+		};
+
+		Fill(origin.column+1, origin.row, remainingRadius);
+		Fill(origin.column-1, origin.row, remainingRadius);
+
+		Fill(origin.column+1, origin.row+1, remainingRadius);
+		Fill(origin.column+1, origin.row-1, remainingRadius);
+
+		Fill(origin.column, origin.row+1, remainingRadius);
+		Fill(origin.column, origin.row-1, remainingRadius);
+
+		Fill(origin.column-1, origin.row+1, remainingRadius);
+		Fill(origin.column-1, origin.row-1, remainingRadius);
+
+/*
             for(int i = -1; i < 2; i++)
             {
                 for(int j = -1; j < 2; j++)
@@ -198,10 +218,11 @@ void BattleMap::FloodFill(Tile *currentOrigin, short remainingRadius, TileFloodN
                         _currentSubmap[origin.column+i][origin.row+j]->mapped == false)  //don't remap if already mapped
                     {
                         TileFloodNode *tmpLastOrigin = _currentSubmap[origin.column][origin.row];
-                        FloodFill(_currentSubmap, _currentSubmap[origin.column+i][origin.row+j]->tile, remainingRadius, tmpLastOrigin);
+                        FloodFill(_currentSubmap, _currentSubmap[origin.column+i][origin.row+j]->tile, --remainingRadius, tmpLastOrigin);
                     }
                 }
             }
+*/
         }
     }
 }
@@ -419,12 +440,14 @@ void BattleMap::MoveUnitToPosition(Unit *unit, Point2D position)
 
 void BattleMap::RescaleTiles(short newWidth, short newHeight)
 {
-    for(int i = 0; i < _width; i++)
-    {
-        for(int j = 0; j < _height; j++)
-        {
-            _map[i][j].SetSize(newWidth, newHeight);
-            _map[i][j].SetPosition(i * newWidth, j * newHeight);
-        }
-    }
+	for(int i = 0; i < _width; i++)
+	{
+		for(int j = 0; j < _height; j++)
+		{
+			_map[i][j].SetSize(newWidth, newHeight);
+			_map[i][j].SetPosition(i * newWidth, j * newHeight);
+			if(_map[i][j].Occupier != nullptr)
+				_map[i][j].Occupier->Position = _map[i][j].GlobalBottomLeft();
+		}
+	}
 }

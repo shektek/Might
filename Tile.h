@@ -30,13 +30,13 @@ class Tile
 		//Sets the position by bottom left corner
 		inline void SetPosition(short x, short y) { _position.x = x; _position.y = y; }
 
-        //reset the size, but not the position - if a set of tiles are being scaled, use in tandem with above
-        inline void SetSize(short width, short height) { _width = width; _height = height; }
+        	//reset the size, but not the position - if a set of tiles are being scaled, use in tandem with above
+	        inline void SetSize(short width, short height) { _width = width; _height = height; }
 
 		inline short GetWidth() const { return _width; }
 		inline short GetHeight() const { return _height; }
 
-        bool ContainsPoint(Point2D position);
+	        bool ContainsPoint(Point2D position);
 
 		//Functions to get the local coords of the tile (0...width, 0...height)
 		Point2D LocalBottomLeft();

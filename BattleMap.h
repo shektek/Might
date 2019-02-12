@@ -22,28 +22,28 @@ class BattleMap
 {
 	private:
 		std::vector<std::vector<Tile> > _map;
-        std::vector<std::vector<TileFloodNode*> > _currentSubmap;
+        	std::vector<std::vector<TileFloodNode*> > _currentSubmap;
 		short _height;
 		short _width;
 		Army* _leftArmy;
 		Army* _rightArmy;
 
 		void ArrangeUnitsDefault(Army *targetArmy, short column);
-        void FloodFill(std::vector<std::vector<TileFloodNode*> > &submap, Tile *currentOrigin, short remainingRadius, TileFloodNode *lastOrigin);
-        void FloodFill(Tile *currentOrigin, short remainingRadius, TileFloodNode *prev);
+        	void FloodFill(std::vector<std::vector<TileFloodNode*> > &submap, Tile *currentOrigin, short remainingRadius, TileFloodNode *lastOrigin);
+        	void FloodFill(Tile *currentOrigin, short remainingRadius, TileFloodNode *prev);
 
 	public:
 		BattleMap();
 		BattleMap(short width, short height);
-        BattleMap(short width, short height, short tileWidth, short tileHeight);
+        	BattleMap(short width, short height, short tileWidth, short tileHeight);
 		BattleMap(short width, short height, Army *leftArmy, Army *rightArmy);
-        BattleMap(short width, short height, short tileWidth, short tileHeight, Army *leftArmy, Army *rightArmy);
+	        BattleMap(short width, short height, short tileWidth, short tileHeight, Army *leftArmy, Army *rightArmy);
 		BattleMap(std::vector<std::vector<Tile> > map, Army *leftArmy, Army *rightArmy);
 		BattleMap(const BattleMap &other);
 		BattleMap &operator=(const BattleMap &other);
 
-        //Create a navigable grid at a position with a radius
-        NavigableGrid CreateFloodFillSubmap(Point2D position, short radius);
+	        //Create a navigable grid at a position with a radius
+        	NavigableGrid CreateFloodFillSubmap(Point2D position, short radius);
 
 		//Arrange units according to an arrangement strategy
 		void ArrangeUnits(Army *targetArmy, ArrangementStrategy strategy);
@@ -55,20 +55,20 @@ class BattleMap
 		void RemoveUnitPiece(Unit *unit);
 		Unit *GetUnitAt(short column, short row);
 		Army *GetOwningArmy(Unit *unit);
-        Tile *GetContainingTile(Point2D position);
-        OrdinalPosition GetArrayLocation(Point2D position);
-        Tile *GetTile(short column, short row);
+        	Tile *GetContainingTile(Point2D position);
+        	OrdinalPosition GetArrayLocation(Point2D position);
+        	Tile *GetTile(short column, short row);
 
 		//Moves a unit to an x,y coordinate
 		void MoveUnitToPosition(Unit *unit, short column, short row);
 		void MoveUnitToPosition(Unit *unit, Point2D position);
 
-        inline std::vector<std::vector<Tile> > GetRawArray() const { return _map; }
+        	inline std::vector<std::vector<Tile> > GetRawArray() const { return _map; }
 		inline short GetHeight() const { return _height; }
 		inline short GetWidth() const { return _width; }
 
-        //Resize the tiles and adjust their position
-        void RescaleTiles(short newWidth, short newHeight);
+        	//Resize the tiles and adjust their position
+        	void RescaleTiles(short newWidth, short newHeight);
 };
 
 #endif
