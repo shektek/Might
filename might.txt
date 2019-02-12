@@ -1,0 +1,201 @@
+﻿MIGHT
+general design:
+turn based
+the battlefield is a table of square tiles with random obstacles spread around
+players are assigned equal points with amount depending on battle type
+players can select a starting formation for troops
+individual troops have hit points, attack damage, etc.
+troops are arranged into stacks which are dealt with as single units
+all abilities should be considered cumulative unless otherwise stated
+players face off 1 on 1, can field 5 (6?) stacks of units that are purchased according to the number of battle points
+units are arranged on the battlefield
+movement is in order of speed priority
+the player is represented by a HERO unit that casts spells and provides buffs - does not engage in combat
+
+units are of three armour levels
+	light	- gambeson, doublet, leather, fur, none
+	medium	- chainmail, scale, light plate (e.g. breastplate and greaves)
+	heavy	- full plate, stoneplate, feathered bronze
+non magical attacks have four types
+	slash	- 1.5x damage against light armour
+	pierce	- 1.5x damage against medium armour
+	crush	- 1.5x damage against heavy armour
+	hack	- 1.2x damage against light/heavy armour
+magical attacks have various effects depending on the unit, see the descriptions below
+units with multiple attacks can target switch unless otherwise stated. I've been explicit in most places anyway.
+
+players can level up and access new spells and abilities
+players can only fight at their level or 1 std dev above - this is recalculated every day to adjust to the maximum level players
+players with a high win/loss ratio are more likely to play higher rated opponents
+
+features roadmap:
+ - first iteration (pre-release):
+		Basic combat system (advanced spells and special attacks not included)
+		Preset formations
+		Army must be chosen before each battle
+		Hero applies buffs before battle
+		Basic matchmaking (match to win/loss ratio)
+		GUI version is functional, but with placeholder art
+		
+ - second iteration (first release):
+		Advanced combat system (to be considered "complete" at this point)
+		Player-created custom formations
+		Army slots allow players to pre-build armies for different points levels
+		Hero can apply buffs during battle
+		Refined matchmaking and direct challenges
+		GUI is done with proper art
+		
+ - third iteration (first major update):
+		Players accumulate gold after battles, victor gets base amount + skill difference, loser gets smaller amount
+		"Realms" introduced
+			Players can travel to other lands
+			Can build encampments to recruit unique units and fight mobs
+			Can build castles to unlock advanced unique units, siege other players castles, slowly gain passive experience for heroes
+		Bounties can be placed on other players after battle
+			A player can only have a limited amount of bounties on them
+			A player can only place a limited amount of bounties on others
+			The bounty costs a certain amount to place, which is recouped with a bonus upon the player being defeated
+			Bounties cannot be placed on a player for some time after they are defeated (to prevent farming top/bottom players)
+			Bounties have a cool down of some time after they are fulfilled, so players can't spam them
+		
+design direction:
+Mid-late 90s aesthetic (HOMM2)
+No cash-grab "mobile game" pay to win crap - this is an actual game that could conceivably be released on any platform
+Paid items are completely optional and do not confer an advantage
+Account for time per game (Chess.com style) with overall-timed live or per-turn-time-out correspondence games
+Animations should be 4-6 frames so as to look janky and old school
+
+factions
+	Kingdom of Dathlorn		
+	Tribes of Kushkuln		
+	Sorcerers of Zyradibuln	
+	Free State of Medranis	
+	PAID: Elemental forces	
+	PAID: The dead			
+	PAID: Legion of the Sun	
+
+units
+	Dathlorn
+	strong attacks and armour, few fast units, little magic
+		man at arms
+			ARMOUR heavy (steel plate), speed 4/10
+			STANDARD attack: slash, extra damage to lightly armoured. 
+			SPECIAL shield bash: half damage attack, all next-round damage halved
+		greatsword
+			ARMOUR medium (partial plate), speed 5/10
+			STANDARD attack: slash, extra damage to lightly armoured. 
+			SPECIAL mighty swing: double damage, half damage next attack
+		hand cannon
+			ARMOUR medium (partial plate), speed 5/10
+			STANDARD quick shot: 75% chance of hitting, if missed has 25% chance of hitting neighbour. 
+			SPECIAL focused shot: guaranteed hit on target, cannot attack next round
+		crossbowman
+			ARMOUR light (gambeson), speed 4/10
+			STANDARD attack: guaranteed hit, extra damage to heavily armoured. 
+			SPECIAL flaming shot: target takes damage next 2 turns. 2 turn timeout.
+		pikeman
+			ARMOUR  medium (partial plate), speed 5/10
+			STANDARD attack: pierce, 1 tile range. 
+			SPECIAL defend: quarter movement, attack all enemies in 1 tile radius
+		mounted knight
+			ARMOUR heavy (steel plate), speed 7/10
+			STANDARD attack: slash, can move after attacking. 
+			SPECIAL charge: pierce, triple damage, 4 turn timeout
+		dismounted knight
+			ARMOUR heavy (steel plate), speed 4/10
+			STANDARD expert strike: slash, pierce, slash (can switch targets). 
+			SPECIAL shield wall: half damage attack, quartered next-round damage taken
+
+	Kushkuln
+	light/medium armour, fast movement, multiple attacks
+		savage
+			ARMOUR light (fur), speed 6/10
+			STANDARD flurry: crushing, two strikes, can target switch. 
+			SPECIAL hit and run: strike target once, then move
+		executioner
+			ARMOUR light (studded leather), speed 5/10
+			STANDARD attack: axe does hack attack. 
+			SPECIAL deadly blow: hack, 1.5x attack, half movement next turn, enemy is stunned next turn and cannot move 
+		raider
+			ARMOUR light (tunic), speed 8/10
+			STANDARD attack: slash, can move after attacking. 
+			SPECIAL javelin: throw piercing, medium range
+		druid
+			ARMOUR light (robes), speed 4/10
+			STANDARD vine whip: cast at enemy to damage and halve movement. 
+			SPECIAL blood rite: possess an enemy for 1 turn, 5 turn timeout
+		shaman
+			ARMOUR medium (scale), speed 6/10
+			STANDARD attack: crush with great mace
+			SPECIAL curse: ranged poison attack, target takes damage for 3 turns
+		murderer
+			ARMOUR light (cloak), speed 7/10
+			STANDARD shank: 5 piercing attacks, can target switch. 
+			SPECIAL cloaked: 25% chance of being hit next round, 1 high damage pierce attack
+		warlord
+			ARMOUR heavy (stoneplate), speed 6/10
+			STANDARD swipe: crush attack that hits all adjacent enemies. 
+			SPECIAL throwing axes: 2 short range high damage hack throws. 2 turn recharge, can target switch
+
+	Zyradibuln
+	light armour, magical attacks, medium speed, few melee or armoured units
+		acolyte
+			ARMOUR light (robes), speed 4/10
+			STANDARD magic bolt: two blasts of magical energy, can target switch
+			SPECIAL concentrated blast: magical energy hits surrounding enemies for half damage, cannot attack next round
+		liminal initiate
+			ARMOUR light (robes), speed 5/10
+			STANDARD flame blade: melee attack, target takes fire damage next turn
+			SPECIAL ice shield: half damage taken next round, movement halved next turn
+		serpent sigil
+			ARMOUR medium (scale robes), speed 5/10
+			STANDARD fangs: two piercing knives, can target switch, poison damage target next turn
+			SPECIAL reptile form: take 75% damage, move 25% faster, one half damage poison attack , half damage poison next turn
+		ancient of storms
+			ARMOUR light (robes), speed 2/10
+			STANDARD chain lightning: strikes enemies within 1 tile recursively, damage reduces 25% each iteration (until < 10%)
+			SPECIAL storm cloud: strike all units in a radius for 3 turns, recharges in 4 turns
+		earth brother
+			ARMOUR light (robes), speed 3/10
+			STANDARD earthstrike: boulders hit an area, striking all enemies in the radius
+			SPECIAL stoneskin: friendly unit (can cast on self) takes half damage for the next 2 turns, 2 turn recharge
+		blind elder
+			ARMOUR light (robes), speed 2/10
+			STANDARD sunstare: attack passes through enemies, first enemy hit is unable to move next turn (blinded)
+			SPECIAL cosmic cloud: enemies in radius cannot attack or move for 2 turns, recharges in 4 turns
+		archmage
+			ARMOUR light (robes), speed 8/10
+			STANDARD magic carpet: pick an enemy unit and move them elsewhere, they receive crushing damage. Can then move after attacking
+			SPECIAL touch of death: 5 turns must pass before use. Close range, instant kill an entire stack. Recharges after 10 turns
+			
+	Medranis
+	light/medium armour, medium/fast speed, counters melee and ranged attacks
+		hired sword
+			ARMOUR light (gambeson), speed 6/10
+			STANDARD 2 attacks, slash then pierce. Can target switch.
+			SPECIAL Parry: Half damage from all attacks next turn, counter-attacks any melee attack with a standard attack
+		peasant slinger
+			ARMOUR light (jerkin), speed 7/10
+			STANDARD covered shot: two crush-damage missiles, hides behind a pavise shield for half-damage from ranged next turn
+			SPECIAL volley: three crush-damage missiles, target units have 75% movement speed
+		elven auxiliary
+			ARMOUR light (chainmail), speed 6/10
+			STANDARD javelin throw: medium-range, medium damage, piercing or crushing (depending on target), 75% damage from missiles next turn
+			SPECIAL spear defense: two piercing attacks, 75% damage from melee next turn
+		dwarf miner
+			ARMOUR medium (partial plate), speed 5/10
+			STANDARD area defense: do chop damage to any enemy in 1-tile radius, works as a counter attack
+			SPECIAL tunnels: double speed, single chop attack to target enemy
+			
+				
+		
+		elemental forces
+		heavy armour, melee/magic attacks, slow/medium speed, expensive units
+		
+		the dead
+		light armour, strong melee damage, magic based on reviving destroyed units
+		
+		legion of the sun
+		medium/heavy armour, magic counter, special abilities based on reflecting spell damage
+		
+		
