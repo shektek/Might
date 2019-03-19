@@ -63,6 +63,7 @@ void SDLHost::Exec(GameMaster *game)
 				_renderSdl->RenderSelectionHighlight(&map, sortedUnits[i]->Position);
 				_renderSdl->RenderLeftPlayer(_game->GetLeftPlayer());
 				_renderSdl->RenderRightPlayer(_game->GetRightPlayer());
+				_renderSdl->RenderBorders();
 				_renderSdl->FinishRender();
 
 				bool spacePressed = false;

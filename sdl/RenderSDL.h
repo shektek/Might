@@ -12,6 +12,18 @@
 class RenderSDL
 {
 	private:
+		short _viewportWidth;
+		short _viewportHeight;
+		short _viewportOriginX;
+		short _viewportOriginY;
+
+		short _borderWidth;
+		short _borderHeight;
+		short _unitRosterHeight;
+		short _worldInfoWidth;
+		bool _unitRosterVisible;
+		bool _worldInfoVisible;
+
 		int _windowWidth;
 		int _windowHeight;
 		int _xGridSpacing;
@@ -31,6 +43,9 @@ class RenderSDL
 		virtual ~RenderSDL();
 
 		void StartRender();
+		void RenderBorders();
+		void RenderUnitRoster();
+		void RenderWorldInfo();
 		void RenderMap(BattleMap *map);
 		void RenderSubmap(NavigableGrid *submap);
 		void RenderLeftPlayer(Player *player);

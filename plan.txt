@@ -6,7 +6,8 @@ PROOF OF CONCEPT
 done!
 
 MOVEMENT PHASE
--Use Qt to display floodfill tiles
--Fix the floodfill algorithm
+-Use a flow path for pathfinding
+-Fix the sprite scale/location
+-Move the battle map into a smaller UI area
 
 NEXT

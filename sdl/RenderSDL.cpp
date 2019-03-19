@@ -6,8 +6,23 @@ RenderSDL::RenderSDL(SDL_Window *win, int windowWidth, int windowHeight)
 	_yGridSpacing = 0;
 	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
 	_window = win;
+
 	_windowWidth = windowWidth;
 	_windowHeight = windowHeight;
+	short windowOriginX = 0;
+	short windowOriginY = 0;
+
+	_borderWidth = (windowWidth/100)*3;
+	_borderHeight = (windowHeight/100)*3;
+	_unitRosterHeight = (windowHeight/100)*15;
+	_worldInfoWidth = (windowWidth/100)*20;
+	_viewportWidth = windowWidth - _borderWidth*2;
+	_viewportHeight = windowHeight - (_borderHeight + _unitRosterHeight);
+	_viewportOriginX = windowOriginX + _borderWidth;
+	_viewportOriginY = windowOriginY + _borderHeight;
+	_unitRosterVisible = true;
+	_worldInfoVisible = false;
+
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
 	_backgroundSurface = _images.GetImage("/home/luke/src/might/data/images/field.jpg");
 	_backgroundTexture = SDL_CreateTextureFromSurface(_renderer, _backgroundSurface);
@@ -52,27 +67,47 @@ void RenderSDL::StartRender()
 	SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_BLEND);
 }
 
+void RenderSDL::RenderBorders()
+{
+	SDL_Surface *sh = _images.GetImage("/home/luke/src/might/data/images/simpleborder_hor.gif");
+	SDL_Texture *th = GetTexture(sh);
+
+	SDL_Rect toprect { 0, 0, _windowWidth, _borderHeight };
+	SDL_Rect bottomrect { 0, _windowHeight - _borderHeight, _windowWidth, _borderHeight };
+	SDL_RenderCopy(_renderer, th, NULL, &toprect);
+	SDL_RenderCopy(_renderer, th, NULL, &bottomrect);
+
+}
+
 void RenderSDL::RenderMap(BattleMap *map)
 {
+	short width = _viewportWidth;
+	short height = _viewportHeight;
+
 	SDL_RenderCopy(_renderer, _backgroundTexture, NULL, NULL);
 
 	//draw grid over the top
-	_xGridSpacing = _windowWidth / map->GetWidth();
-	_yGridSpacing = _windowHeight / map->GetHeight();
+	_xGridSpacing = width / map->GetWidth();
+	_yGridSpacing = height / map->GetHeight();
 
 	map->RescaleTiles(_xGridSpacing, _yGridSpacing);
 
 	SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 200);
 
-	for(int x = 0; x < _windowWidth; x += _xGridSpacing)
+	//TODO: rounding errors make these lengths inadequate
+	int x;
+	for(x = _viewportOriginX; x < width; x += _xGridSpacing)
 	{
-		SDL_RenderDrawLine(_renderer, x, 0, x, _windowHeight);
+		SDL_RenderDrawLine(_renderer, x, _viewportOriginY, x, height);
 	}
+	SDL_RenderDrawLine(_renderer, x, _viewportOriginY, x, height);
 
-	for(int y = 0; y < _windowHeight; y += _yGridSpacing)
+	int y;
+	for(y = _viewportOriginY; y < height; y += _yGridSpacing)
 	{
-		SDL_RenderDrawLine(_renderer, 0, y, _windowWidth, y);
+		SDL_RenderDrawLine(_renderer, _viewportOriginX, y, width, y);
 	}
+	SDL_RenderDrawLine(_renderer, _viewportOriginX, y, width, y);
 }
 
 void RenderSDL::RenderSubmap(NavigableGrid *submap)
@@ -108,6 +143,7 @@ void RenderSDL::RenderSubmap(NavigableGrid *submap)
 	}
 }
 
+//TODO: this really ought to call RenderUnit!
 void RenderSDL::RenderLeftPlayer(Player *player)
 {
 	for(int i = 0; i < player->army->GetUnitCount(); i++)
@@ -141,6 +177,7 @@ void RenderSDL::RenderRightPlayer(Player *player)
 	}
 }
 
+//TODO: take the bits from the Render Player functions above that render a unit
 void RenderSDL::RenderUnit(Unit *unit)
 {
 
