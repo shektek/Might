@@ -14,7 +14,7 @@ RenderSDL::RenderSDL(SDL_Window *win, int windowWidth, int windowHeight)
 
 	_borderWidth = (windowWidth/100)*3;
 	_borderHeight = (windowHeight/100)*3;
-	_unitRosterHeight = (windowHeight/100)*15;
+	_unitRosterHeight = (windowHeight/100)*20;
 	_worldInfoWidth = (windowWidth/100)*20;
 	_viewportWidth = windowWidth - _borderWidth*2;
 	_viewportHeight = windowHeight - (_borderHeight + _unitRosterHeight);
@@ -70,13 +70,18 @@ void RenderSDL::StartRender()
 void RenderSDL::RenderBorders()
 {
 	SDL_Surface *sh = _images.GetImage("/home/luke/src/might/data/images/simpleborder_hor.gif");
+	SDL_Surface *sv = _images.GetImage("/home/luke/src/might/data/images/simpleborder_ver.gif");
 	SDL_Texture *th = GetTexture(sh);
+	SDL_Texture *tv = GetTexture(sv);
 
 	SDL_Rect toprect { 0, 0, _windowWidth, _borderHeight };
 	SDL_Rect bottomrect { 0, _windowHeight - _borderHeight, _windowWidth, _borderHeight };
+	SDL_Rect leftrect { 0, _borderHeight, _borderWidth, _windowHeight - _borderHeight*2 };
+	SDL_Rect rightrect { _windowWidth - _borderWidth, _borderHeight, _borderWidth, _windowHeight - _borderHeight*2 };
 	SDL_RenderCopy(_renderer, th, NULL, &toprect);
 	SDL_RenderCopy(_renderer, th, NULL, &bottomrect);
-
+	SDL_RenderCopy(_renderer, tv, NULL, &leftrect);
+	SDL_RenderCopy(_renderer, tv, NULL, &rightrect);
 }
 
 void RenderSDL::RenderMap(BattleMap *map)
@@ -135,7 +140,7 @@ void RenderSDL::RenderSubmap(NavigableGrid *submap)
 				else
 					SDL_SetRenderDrawColor(_renderer, 100, 0, 0, 50);
 
-				SDL_Rect rect { blCorner.x, blCorner.y, _xGridSpacing, _yGridSpacing };
+				SDL_Rect rect { _viewportOriginX + blCorner.x, _viewportOriginY + blCorner.y, _xGridSpacing, _yGridSpacing };
 
 				SDL_RenderFillRect(_renderer, &rect);
 			}
@@ -191,7 +196,7 @@ void RenderSDL::RenderSelectionHighlight(BattleMap *map, Point2D position)
 		Point2D bl = location->GlobalBottomLeft();
 
 		SDL_SetRenderDrawColor(_renderer, 255, 255, 64, 100);
-		SDL_Rect rect { (double)bl.x+_xGridSpacing*0.075, (double)bl.y+_yGridSpacing*0.075, _xGridSpacing*0.9, _yGridSpacing*0.9 };
+		SDL_Rect rect { _viewportOriginX + (double)bl.x+_xGridSpacing*0.075, _viewportOriginY + (double)bl.y+_yGridSpacing*0.075, _xGridSpacing*0.9, _yGridSpacing*0.9 };
 
 		SDL_RenderFillRect(_renderer, &rect);
 	}
