@@ -1,4 +1,10 @@
 #include "RenderSDL.h"
+#include <cstring>
+
+const char *imagesDir = "/home/luke/src/might/data/images/";
+const char *battleBgImg = "field.jpg";
+const char *borderHorImg = "simpleborder_hor.gif";
+const char *borderVerImg = "simpleborder_ver.gif";
 
 RenderSDL::RenderSDL(SDL_Window *win, int windowWidth, int windowHeight)
 {
@@ -19,12 +25,16 @@ RenderSDL::RenderSDL(SDL_Window *win, int windowWidth, int windowHeight)
 	_viewportWidth = windowWidth - _borderWidth*2;
 	_viewportHeight = windowHeight - (_borderHeight + _unitRosterHeight);
 	_viewportOriginX = windowOriginX + _borderWidth;
-	_viewportOriginY = windowOriginY + _borderHeight;
+	_viewportOriginY = windowOriginY + _borderHeight * 4;
 	_unitRosterVisible = true;
 	_worldInfoVisible = false;
 
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
-	_backgroundSurface = _images.GetImage("/home/luke/src/might/data/images/field.jpg");
+
+
+	char str[256] = {0};
+	sprintf(str, "%s%s", imagesDir, battleBgImg);
+	_backgroundSurface = _images.GetImage(str);
 	_backgroundTexture = SDL_CreateTextureFromSurface(_renderer, _backgroundSurface);
 }
 
@@ -69,8 +79,12 @@ void RenderSDL::StartRender()
 
 void RenderSDL::RenderBorders()
 {
-	SDL_Surface *sh = _images.GetImage("/home/luke/src/might/data/images/simpleborder_hor.gif");
-	SDL_Surface *sv = _images.GetImage("/home/luke/src/might/data/images/simpleborder_ver.gif");
+	char buf[256] = {0};
+	sprintf(buf, "%s%s", imagesDir, borderHorImg);
+	SDL_Surface *sh = _images.GetImage(buf);
+	memset(buf, 256, 0);
+	sprintf(buf, "%s%s", imagesDir, borderVerImg);
+	SDL_Surface *sv = _images.GetImage(buf);
 	SDL_Texture *th = GetTexture(sh);
 	SDL_Texture *tv = GetTexture(sv);
 
@@ -199,6 +213,21 @@ void RenderSDL::RenderSelectionHighlight(BattleMap *map, Point2D position)
 		SDL_Rect rect { _viewportOriginX + (double)bl.x+_xGridSpacing*0.075, _viewportOriginY + (double)bl.y+_yGridSpacing*0.075, _xGridSpacing*0.9, _yGridSpacing*0.9 };
 
 		SDL_RenderFillRect(_renderer, &rect);
+	}
+}
+
+void RenderSDL::RenderMouseHover(BattleMap *map, int mouseX, int mouseY)
+{
+	//if the mouse is on the map somewhere
+	if(mouseX >= _viewportOriginX && mouseX < _viewportOriginX+_viewportWidth
+		&& mouseY >= _viewportOriginY && mouseY < _viewportOriginY+_viewportHeight)
+	{
+		//find the tile that the mouse is in
+		int normX = mouseX - _viewportOriginX;
+		int normY = mouseY - _viewportOriginY;
+
+		//for now...
+		RenderSelectionHighlight(map, Point2D{normX, normY});
 	}
 }
 

@@ -17,8 +17,8 @@ SDLHost::~SDLHost()
 bool SDLHost::Init(int argc, char **argv)
 {
 	_running = (SDL_Init(SDL_INIT_EVERYTHING) == 0);
-	int width = 640;
-	int height = 400;
+	int width = 800;
+	int height = 600;
 	_window = SDL_CreateWindow("MIGHT", 100, 100, width, height, 0);
 	_renderSdl = new RenderSDL(_window, width, height);
 
@@ -54,6 +54,9 @@ void SDLHost::Exec(GameMaster *game)
 
 			for(unsigned int i = 0; i < sortedUnits.size(); i++)
 			{
+				int mousex = 0, mousey = 0;
+				SDL_GetMouseState(&mousex, &mousey);
+
 				game->SelectUnit(sortedUnits[i]);
 				NavigableGrid submap = map.CreateFloodFillSubmap(sortedUnits[i]->Position, sortedUnits[i]->Speed);
 
@@ -64,11 +67,14 @@ void SDLHost::Exec(GameMaster *game)
 				_renderSdl->RenderLeftPlayer(_game->GetLeftPlayer());
 				_renderSdl->RenderRightPlayer(_game->GetRightPlayer());
 				_renderSdl->RenderBorders();
+				_renderSdl->RenderMouseHover(&map, mousex, mousey);
 				_renderSdl->FinishRender();
+
 
 				bool spacePressed = false;
 				do
 				{
+
 					if(SDL_PollEvent(&e))
 					{
 						if(e.type == SDL_QUIT)

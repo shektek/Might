@@ -52,6 +52,7 @@ class RenderSDL
 		void RenderRightPlayer(Player *player);
 		void RenderUnit(Unit *unit);
 		void RenderSelectionHighlight(BattleMap *map, Point2D position);
+		void RenderMouseHover(BattleMap *map, int mouseX, int mouseY);
 		void FinishRender();
 };
 

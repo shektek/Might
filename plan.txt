@@ -1,13 +1,5 @@
-PROOF OF CONCEPT
--Arrange 8x14 map
--Place units on either side
--Move units around
--Add basic attacks
-done!
-
 MOVEMENT PHASE
 -Use a flow path for pathfinding
 -Fix the sprite scale/location
--Move the battle map into a smaller UI area
-
-NEXT
+-Separate the render/input functions
+-Move unit rendering into RenderUnit
