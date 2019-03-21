@@ -15,6 +15,8 @@ class SDLHost : public AppHost
 		SDL_Window *_window;
 		int _mapWidth;
 		int _mapHeight;
+
+		void HandleEvents(BattleMap *map);
 	public:
 		SDLHost();
 		virtual ~SDLHost();

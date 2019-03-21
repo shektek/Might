@@ -5,6 +5,7 @@ const char *imagesDir = "/home/luke/src/might/data/images/";
 const char *battleBgImg = "field.jpg";
 const char *borderHorImg = "simpleborder_hor.gif";
 const char *borderVerImg = "simpleborder_ver.gif";
+const char *swordsmanImg = "swordsman.gif";
 
 RenderSDL::RenderSDL(SDL_Window *win, int windowWidth, int windowHeight)
 {
@@ -113,20 +114,18 @@ void RenderSDL::RenderMap(BattleMap *map)
 
 	SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 200);
 
-	//TODO: rounding errors make these lengths inadequate
-	int x;
-	for(x = _viewportOriginX; x < width; x += _xGridSpacing)
+	int localWidth = width + _viewportOriginX;
+	int localHeight = height + _viewportOriginY;
+	int x = 0, y = 0;
+	for(x = _viewportOriginX; x <= localWidth; x += _xGridSpacing)
 	{
-		SDL_RenderDrawLine(_renderer, x, _viewportOriginY, x, height);
+		SDL_RenderDrawLine(_renderer, x, _viewportOriginY, x, localHeight);
 	}
-	SDL_RenderDrawLine(_renderer, x, _viewportOriginY, x, height);
 
-	int y;
-	for(y = _viewportOriginY; y < height; y += _yGridSpacing)
+	for(y = _viewportOriginY; y <= localHeight; y += _yGridSpacing)
 	{
-		SDL_RenderDrawLine(_renderer, _viewportOriginX, y, width, y);
+		SDL_RenderDrawLine(_renderer, _viewportOriginX, y, localWidth, y);
 	}
-	SDL_RenderDrawLine(_renderer, _viewportOriginX, y, width, y);
 }
 
 void RenderSDL::RenderSubmap(NavigableGrid *submap)
@@ -162,7 +161,6 @@ void RenderSDL::RenderSubmap(NavigableGrid *submap)
 	}
 }
 
-//TODO: this really ought to call RenderUnit!
 void RenderSDL::RenderLeftPlayer(Player *player)
 {
 	for(int i = 0; i < player->army->GetUnitCount(); i++)
@@ -170,12 +168,7 @@ void RenderSDL::RenderLeftPlayer(Player *player)
 		Unit *unit = player->army->GetUnitAt(i);
 		if(unit != nullptr)
 		{
-			SDL_Surface *s = _images.GetImage("/home/luke/src/might/data/images/swordsman.gif");
-			SDL_Texture *t = GetTexture(s);
-
-			SDL_Rect rect { unit->Position.x, unit->Position.y, 128, 128 };
-			//SDL_Rect rect { unit->Position.x, unit->Position.y, _xGridSpacing, _yGridSpacing };
-			SDL_RenderCopy(_renderer, t, NULL, &rect);
+			RenderUnit(unit, SDL_FLIP_NONE);
 		}
 	}
 }
@@ -187,19 +180,20 @@ void RenderSDL::RenderRightPlayer(Player *player)
 		Unit *unit = player->army->GetUnitAt(i);
 		if(unit != nullptr)
 		{
-			SDL_Surface *s = _images.GetImage("/home/luke/src/might/data/images/swordsman.gif");
-			SDL_Texture *t = GetTexture(s);
-
-			SDL_Rect rect { unit->Position.x, unit->Position.y, _xGridSpacing, _yGridSpacing };
-			SDL_RenderCopyEx(_renderer, t, NULL, &rect, 0, NULL, SDL_FLIP_HORIZONTAL);
+			RenderUnit(unit, SDL_FLIP_HORIZONTAL);
 		}
 	}
 }
 
 //TODO: take the bits from the Render Player functions above that render a unit
-void RenderSDL::RenderUnit(Unit *unit)
+void RenderSDL::RenderUnit(Unit *unit, SDL_RendererFlip sdlFlip)
 {
-
+	char buf[256] = {0};
+	sprintf(buf, "%s%s", imagesDir, swordsmanImg);
+	SDL_Surface *s = _images.GetImage(buf);
+	SDL_Texture *t = GetTexture(s);
+	SDL_Rect rect { unit->Position.x, unit->Position.y, 128, 128 };
+	SDL_RenderCopyEx(_renderer, t, NULL, &rect, 0, NULL, sdlFlip);
 }
 
 void RenderSDL::RenderSelectionHighlight(BattleMap *map, Point2D position)

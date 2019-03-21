@@ -25,6 +25,28 @@ bool SDLHost::Init(int argc, char **argv)
 	return _running;
 }
 
+bool SDLHost::HandleEvents(BattleMap *map, Unit *selectedUnit)
+{
+	bool result = true;
+	SDL_Event e;
+
+	while(SDL_PollEvent(&e))
+	{
+		if(e.type == SDL_QUIT)
+			result = false;
+		if(e.type == SDL_KEYDOWN)
+		{//maybe check which key first
+			spacePressed = true;
+		}
+		if(e.type == SDL_MOUSEBUTTONDOWN)
+		{
+			int x, y;
+			SDL_GetMouseState(&x, &y);
+			map->MoveUnitToPosition(sortedUnits[i], x, y);
+		}
+	}
+}
+
 void SDLHost::Exec(GameMaster *game)
 {
 	_game = game;
@@ -34,7 +56,6 @@ void SDLHost::Exec(GameMaster *game)
 
 	BattleMap map(_mapWidth, _mapHeight, _game->GetLeftPlayer()->army, _game->GetRightPlayer()->army);
 	_game->PrepareRound(&map, AS_LEFT_DEFAULT, AS_RIGHT_DEFAULT);
-
 
 	while(_running)
 	{
@@ -70,30 +91,9 @@ void SDLHost::Exec(GameMaster *game)
 				_renderSdl->RenderMouseHover(&map, mousex, mousey);
 				_renderSdl->FinishRender();
 
-
 				bool spacePressed = false;
-				do
-				{
 
-					if(SDL_PollEvent(&e))
-					{
-						if(e.type == SDL_QUIT)
-							_running = false;
-						if(e.type == SDL_KEYDOWN)
-						{//maybe check which key first
-							spacePressed = true;
-						}
-						if(e.type == SDL_MOUSEBUTTONDOWN)
-						{
-							int x, y;
-							SDL_GetMouseState(&x, &y);
-							map.MoveUnitToPosition(sortedUnits[i], x, y);
-						}
-					}
-
-					if(_running && !spacePressed)
-						SDL_Delay(100);
-				} while (!spacePressed && _running);
+				_running = HandleEvents(&map, sortedUnits[i]);
 			}
 		}
 	}

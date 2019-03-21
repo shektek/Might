@@ -50,7 +50,7 @@ class RenderSDL
 		void RenderSubmap(NavigableGrid *submap);
 		void RenderLeftPlayer(Player *player);
 		void RenderRightPlayer(Player *player);
-		void RenderUnit(Unit *unit);
+		void RenderUnit(Unit *unit, SDL_RendererFlip sdlFlip);
 		void RenderSelectionHighlight(BattleMap *map, Point2D position);
 		void RenderMouseHover(BattleMap *map, int mouseX, int mouseY);
 		void FinishRender();
