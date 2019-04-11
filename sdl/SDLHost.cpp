@@ -55,8 +55,6 @@ bool SDLHost::HandleEvents(GameMaster *game, Unit *selectedUnit)
 	return result;
 }
 
-#include <unistd.h>
-
 void SDLHost::Exec(GameMaster *game)
 {
 	_game = game;
@@ -76,7 +74,6 @@ void SDLHost::Exec(GameMaster *game)
 		SDL_GetMouseState(&mousex, &mousey);
 
 		NavigableGrid submap = map.CreateFloodFillSubmap(selectedUnit->Position, selectedUnit->Speed);
-
 
 		_renderSdl->StartRender();
 		_renderSdl->RenderMap(&map);
