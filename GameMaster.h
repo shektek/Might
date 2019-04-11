@@ -12,6 +12,7 @@ class GameMaster
 	private:
 		Player *_left;
 		Player *_right;
+		Player *_current;
 		BattleMap *_map;
 		Army *_leftArmy;
 		Army *_rightArmy;
@@ -38,11 +39,16 @@ class GameMaster
 		//determine who starts the next round
 		std::vector<Player*> GetInitiativeOrder();
 
+		//advance through the unit list, and through the players
+		void StepRound();
+
         	//apply end of round rules
 		void EndRound();
 
 		Player *GetLeftPlayer() { return _left; }
 		Player *GetRightPlayer() { return _right; }
+		BattleMap *GetBattleMap() { return _map; }
+		Unit *GetSelectedUnit() { return _currentSelected; }
 };
 
 #endif

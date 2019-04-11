@@ -16,7 +16,7 @@ class SDLHost : public AppHost
 		int _mapWidth;
 		int _mapHeight;
 
-		void HandleEvents(BattleMap *map);
+		bool HandleEvents(GameMaster *game, Unit *selectedUnit);
 	public:
 		SDLHost();
 		virtual ~SDLHost();

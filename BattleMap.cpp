@@ -104,13 +104,13 @@ NavigableGrid BattleMap::CreateFloodFillSubmap(Point2D position, short radius)
     std::vector<OrdinalPosition> kill;
 
     submap.resize(radius*2+1);
-    for(int i = 0; i < radius*2+1; i++)
+    for(short i = 0; i < radius*2+1; i++)
     {
         submap[i].resize(radius*2+1);
-        for(int j = 0; j < radius*2+1; j++)
+        for(short j = 0; j < radius*2+1; j++)
         {
-            int pos_i = originPos.column + i - radius;
-            int pos_j = originPos.row + j - radius;
+            short pos_i = originPos.column + i - radius;
+            short pos_j = originPos.row + j - radius;
 
             //get the tile from the battlemap
             Tile *thisTile = GetTile(pos_i, pos_j);
@@ -145,7 +145,7 @@ NavigableGrid BattleMap::CreateFloodFillSubmap(Point2D position, short radius)
     }
 
     //erase empty rows
-    int nonEmpty = 0;
+    unsigned int nonEmpty = 0;
     while(nonEmpty < submap.size())
     {
         if(submap[nonEmpty].size() == 0)
@@ -166,7 +166,6 @@ NavigableGrid BattleMap::CreateFloodFillSubmap(Point2D position, short radius)
 void BattleMap::FloodFill(Tile *currentOrigin, short remainingRadius, TileFloodNode *prev)
 {
     //first ensure this exists in the battlemap
-    OrdinalPosition battlemapOrigin = GetArrayLocation(currentOrigin->GlobalBottomLeft());
     OrdinalPosition origin = GetFloodArrayLocation(_currentSubmap, currentOrigin->GlobalBottomLeft());
 
     if(origin.column != -1 && origin.row != -1)
@@ -186,7 +185,7 @@ void BattleMap::FloodFill(Tile *currentOrigin, short remainingRadius, TileFloodN
 
         if(remainingRadius > 0)
         {
-		auto Fill = [this](int thisColumn, int thisRow, int remainingRadius)
+		auto Fill = [this](unsigned int thisColumn, unsigned int thisRow, int remainingRadius)
 		{
 			if(thisColumn >= 0 && thisRow >= 0 &&
 			    thisColumn < this->_currentSubmap.size() && thisRow < this->_currentSubmap[thisColumn].size() &&
@@ -232,7 +231,6 @@ void BattleMap::FloodFill(std::vector<std::vector<TileFloodNode*> > &submap, Til
     --remainingRadius;
 
     //first ensure this exists in the battlemap
-    OrdinalPosition battlemapOrigin = GetArrayLocation(currentOrigin->GlobalBottomLeft());
     OrdinalPosition origin = GetFloodArrayLocation(submap, currentOrigin->GlobalBottomLeft());
 
     if(origin.column != -1 && origin.row != -1)
@@ -252,9 +250,9 @@ void BattleMap::FloodFill(std::vector<std::vector<TileFloodNode*> > &submap, Til
 
         if(remainingRadius > 0)
         {
-            for(int i = -1; i < 2; i++)
+            for(unsigned int i = -1; i < 2; i++)
             {
-                for(int j = -1; j < 2; j++)
+                for(unsigned int j = -1; j < 2; j++)
                 {
                     if(i != 0 && j != 0 &&  //don't try to remap the origin
                         origin.column + i > 0 && origin.column + i < submap.size() &&   //don't go outside map bounds

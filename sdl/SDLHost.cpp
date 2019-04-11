@@ -25,27 +25,37 @@ bool SDLHost::Init(int argc, char **argv)
 	return _running;
 }
 
-bool SDLHost::HandleEvents(BattleMap *map, Unit *selectedUnit)
+bool SDLHost::HandleEvents(GameMaster *game, Unit *selectedUnit)
 {
 	bool result = true;
 	SDL_Event e;
+
+	BattleMap *map = game->GetBattleMap();
 
 	while(SDL_PollEvent(&e))
 	{
 		if(e.type == SDL_QUIT)
 			result = false;
-		if(e.type == SDL_KEYDOWN)
-		{//maybe check which key first
-			spacePressed = true;
+		if(e.type == SDL_KEYUP)
+		{
+			if(e.key.keysym.sym == SDLK_SPACE)
+			{
+				//maybe check which key first
+				game->StepRound();
+			}
 		}
 		if(e.type == SDL_MOUSEBUTTONDOWN)
 		{
 			int x, y;
 			SDL_GetMouseState(&x, &y);
-			map->MoveUnitToPosition(sortedUnits[i], x, y);
+			map->MoveUnitToPosition(selectedUnit, x, y);
 		}
 	}
+
+	return result;
 }
+
+#include <unistd.h>
 
 void SDLHost::Exec(GameMaster *game)
 {
@@ -59,43 +69,24 @@ void SDLHost::Exec(GameMaster *game)
 
 	while(_running)
 	{
-		SDL_Event e;
+		auto *selectedUnit = _game->GetSelectedUnit();
+		_running = HandleEvents(_game, selectedUnit);
 
-		//this has to happen before player input
-		_game->ApplySpellEffects();
+		int mousex = 0, mousey = 0;
+		SDL_GetMouseState(&mousex, &mousey);
 
-		std::vector<Player*> players = _game->GetInitiativeOrder();
+		NavigableGrid submap = map.CreateFloodFillSubmap(selectedUnit->Position, selectedUnit->Speed);
 
-		//if player == me, allow certain actions
 
-		//for now just let both players do stuff
-		for(int curPlayer = 0; curPlayer < 2; curPlayer++)
-		{
-			std::vector<Unit*> sortedUnits = players[curPlayer]->army->GetSpeedSorted();
-
-			for(unsigned int i = 0; i < sortedUnits.size(); i++)
-			{
-				int mousex = 0, mousey = 0;
-				SDL_GetMouseState(&mousex, &mousey);
-
-				game->SelectUnit(sortedUnits[i]);
-				NavigableGrid submap = map.CreateFloodFillSubmap(sortedUnits[i]->Position, sortedUnits[i]->Speed);
-
-				_renderSdl->StartRender();
-				_renderSdl->RenderMap(&map);
-				_renderSdl->RenderSubmap(&submap);
-				_renderSdl->RenderSelectionHighlight(&map, sortedUnits[i]->Position);
-				_renderSdl->RenderLeftPlayer(_game->GetLeftPlayer());
-				_renderSdl->RenderRightPlayer(_game->GetRightPlayer());
-				_renderSdl->RenderBorders();
-				_renderSdl->RenderMouseHover(&map, mousex, mousey);
-				_renderSdl->FinishRender();
-
-				bool spacePressed = false;
-
-				_running = HandleEvents(&map, sortedUnits[i]);
-			}
-		}
+		_renderSdl->StartRender();
+		_renderSdl->RenderMap(&map);
+		_renderSdl->RenderSubmap(&submap);
+		_renderSdl->RenderSelectionHighlight(&map, selectedUnit->Position);
+		_renderSdl->RenderLeftPlayer(_game->GetLeftPlayer());
+		_renderSdl->RenderRightPlayer(_game->GetRightPlayer());
+		_renderSdl->RenderBorders();
+		_renderSdl->RenderMouseHover(&map, mousex, mousey);
+		_renderSdl->FinishRender();
 	}
 }
 

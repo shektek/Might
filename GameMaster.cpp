@@ -4,6 +4,7 @@ GameMaster::GameMaster()
 {
 	_left = nullptr;
 	_right = nullptr;
+	_current = nullptr;
 	_leftArmy = nullptr;
 	_rightArmy = nullptr;
 	_previousSelected = nullptr;
@@ -14,6 +15,7 @@ GameMaster::GameMaster(Player *left, Player *right)
 {
 	_left = left;
 	_right = right;
+	_current = nullptr;
 	_leftArmy = _left->army;
 	_rightArmy = _right->army;
 	_previousSelected = nullptr;
@@ -48,6 +50,10 @@ void GameMaster::PrepareRound(BattleMap *map, ArrangementStrategy leftArrangemen
 
 	_map->ArrangeUnits(_leftArmy, leftArrangement);
 	_map->ArrangeUnits(_rightArmy, rightArrangement);
+
+	auto arrangedPlayers = GetInitiativeOrder();
+	_current = arrangedPlayers[0];
+	SelectUnit(_current->army->GetUnitAt(0));
 }
 
 void GameMaster::PrepareRound(BattleMap *map, Army *left, Army *right, ArrangementStrategy leftArrangement, ArrangementStrategy rightArrangement)
@@ -58,6 +64,10 @@ void GameMaster::PrepareRound(BattleMap *map, Army *left, Army *right, Arrangeme
 
 	_map->ArrangeUnits(_leftArmy, leftArrangement);
 	_map->ArrangeUnits(_rightArmy, rightArrangement);
+
+	auto arrangedPlayers = GetInitiativeOrder();
+	_current = arrangedPlayers[0];
+	SelectUnit(_current->army->GetUnitAt(0));
 }
 
 void GameMaster::ApplySpellEffects()
@@ -93,6 +103,31 @@ void GameMaster::SelectUnit(Unit *unit)
 	_previousSelected = _currentSelected;
 	unit->IsSelected = true;
 	_currentSelected = unit;
+}
+
+void GameMaster::StepRound()
+{
+	ApplySpellEffects();
+
+	//get the next piece to move, switching players if necessary
+	if(_currentSelected == _current->army->GetUnitAt(_current->army->GetUnitCount()-1))
+	{
+		if(_current == _left)
+			_current = _right;
+		else
+			_current = _left;
+
+		SelectUnit(_current->army->GetUnitAt(0));
+	}
+	else
+	{
+		for(int i = 0; i < _current->army->GetUnitCount(); i++)
+			if(_current->army->GetUnitAt(i) == _currentSelected)
+			{
+				SelectUnit(_current->army->GetUnitAt(i+1));
+				break;
+			}
+	}
 }
 
 void GameMaster::EndRound()

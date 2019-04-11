@@ -83,7 +83,7 @@ void RenderSDL::RenderBorders()
 	char buf[256] = {0};
 	sprintf(buf, "%s%s", imagesDir, borderHorImg);
 	SDL_Surface *sh = _images.GetImage(buf);
-	memset(buf, 256, 0);
+	memset(buf, 0, 256);
 	sprintf(buf, "%s%s", imagesDir, borderVerImg);
 	SDL_Surface *sv = _images.GetImage(buf);
 	SDL_Texture *th = GetTexture(sh);
@@ -204,7 +204,7 @@ void RenderSDL::RenderSelectionHighlight(BattleMap *map, Point2D position)
 		Point2D bl = location->GlobalBottomLeft();
 
 		SDL_SetRenderDrawColor(_renderer, 255, 255, 64, 100);
-		SDL_Rect rect { _viewportOriginX + (double)bl.x+_xGridSpacing*0.075, _viewportOriginY + (double)bl.y+_yGridSpacing*0.075, _xGridSpacing*0.9, _yGridSpacing*0.9 };
+		SDL_Rect rect { _viewportOriginX + (int)((double)bl.x+_xGridSpacing*0.075), _viewportOriginY + (int)((double)bl.y+_yGridSpacing*0.075), (int)(_xGridSpacing*0.9), (int)(_yGridSpacing*0.9) };
 
 		SDL_RenderFillRect(_renderer, &rect);
 	}
@@ -217,8 +217,8 @@ void RenderSDL::RenderMouseHover(BattleMap *map, int mouseX, int mouseY)
 		&& mouseY >= _viewportOriginY && mouseY < _viewportOriginY+_viewportHeight)
 	{
 		//find the tile that the mouse is in
-		int normX = mouseX - _viewportOriginX;
-		int normY = mouseY - _viewportOriginY;
+		short normX = mouseX - _viewportOriginX;
+		short normY = mouseY - _viewportOriginY;
 
 		//for now...
 		RenderSelectionHighlight(map, Point2D{normX, normY});

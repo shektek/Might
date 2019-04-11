@@ -1,4 +1,4 @@
-CC=g++ -g
+CC=g++ -g -Wall
 CFLAGS=-std=c++11 -I.
 LDFLAGS=-lncurses -lSDL2main -lSDL2 -lSDL2_image
 SRCDIR = ./

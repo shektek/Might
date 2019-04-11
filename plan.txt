@@ -1,3 +1,10 @@
+fixing the main loop:
+	- separate main loop into input -> update -> render
+	- move the unit control into the game master
+	- animate moving units, lock input
+	- when animation is done, proceed to next unit
+	- once the last unit has moved, swap players
+
 MOVEMENT PHASE
 -Use a flow path for pathfinding
 -Fix the sprite scale/location
