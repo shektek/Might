@@ -24,6 +24,7 @@ bool SDLHost::Init(int argc, char **argv)
 
 	return _running;
 }
+#include <cstdio>
 
 bool SDLHost::HandleEvents(GameMaster *game, Unit *selectedUnit)
 {
@@ -44,11 +45,12 @@ bool SDLHost::HandleEvents(GameMaster *game, Unit *selectedUnit)
 				game->StepRound();
 			}
 		}
-		if(e.type == SDL_MOUSEBUTTONDOWN)
+		if(e.type == SDL_MOUSEBUTTONUP)
 		{
 			int x, y;
 			SDL_GetMouseState(&x, &y);
-			map->MoveUnitToPosition(selectedUnit, x, y);
+			printf("moving to %d %d\n", x, y);
+			map->MoveUnitToPosition(selectedUnit, Point2D(x, y));
 		}
 	}
 
@@ -64,18 +66,27 @@ void SDLHost::Exec(GameMaster *game)
 
 	BattleMap map(_mapWidth, _mapHeight, _game->GetLeftPlayer()->army, _game->GetRightPlayer()->army);
 	_game->PrepareRound(&map, AS_LEFT_DEFAULT, AS_RIGHT_DEFAULT);
+	NavigableGrid submap;
+	Unit *lastSelected = nullptr;
+	Unit *selectedUnit = nullptr;
+
+	double frameStart = 0, frameEnd = SDL_GetTicks(), frameDelta = 0;
 
 	while(_running)
 	{
-		auto *selectedUnit = _game->GetSelectedUnit();
+		frameStart = SDL_GetTicks();
+		frameDelta = frameEnd - frameStart;
+		lastSelected = selectedUnit;
+		selectedUnit = _game->GetSelectedUnit();
 		_running = HandleEvents(_game, selectedUnit);
 
 		int mousex = 0, mousey = 0;
 		SDL_GetMouseState(&mousex, &mousey);
 
-		NavigableGrid submap = map.CreateFloodFillSubmap(selectedUnit->Position, selectedUnit->Speed);
+		if(lastSelected != selectedUnit)
+			submap = map.CreateFloodFillSubmap(selectedUnit->Position, selectedUnit->Speed);
 
-		_renderSdl->StartRender();
+		_renderSdl->StartRender(frameDelta);
 		_renderSdl->RenderMap(&map);
 		_renderSdl->RenderSubmap(&submap);
 		_renderSdl->RenderSelectionHighlight(&map, selectedUnit->Position);
@@ -84,6 +95,8 @@ void SDLHost::Exec(GameMaster *game)
 		_renderSdl->RenderBorders();
 		_renderSdl->RenderMouseHover(&map, mousex, mousey);
 		_renderSdl->FinishRender();
+
+		frameEnd = SDL_GetTicks();
 	}
 }
 

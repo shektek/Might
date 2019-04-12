@@ -411,16 +411,21 @@ void BattleMap::RemoveUnitPiece(Unit *unit)
 
 void BattleMap::MoveUnitToPosition(Unit *unit, short column, short row)
 {
-    if(unit != nullptr && IsTileAccessible(column, row))
+	if(unit != nullptr && IsTileAccessible(column, row))
 	{
 		short oldx = unit->Position.x;
 		short oldy = unit->Position.y;
 
-		_map[oldx][oldy].Occupied = false;
-		_map[oldx][oldy].Occupier = nullptr;
-		unit->Position = _map[column][row].GlobalBottomLeft();
-		_map[column][row].Occupied = true;
-		_map[column][row].Occupier = unit;
+		OrdinalPosition oldPos = GetArrayLocation(Point2D(oldx, oldy));
+
+		if(oldPos.column != column && oldPos.row != row)
+		{
+			_map[oldPos.column][oldPos.row].Occupied = false;
+			_map[oldPos.column][oldPos.row].Occupier = nullptr;
+			unit->Position = _map[column][row].GlobalBottomLeft();
+			_map[column][row].Occupied = true;
+			_map[column][row].Occupier = unit;
+		}
 	}
 }
 

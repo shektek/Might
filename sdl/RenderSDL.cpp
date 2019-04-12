@@ -71,8 +71,9 @@ void RenderSDL::ClearTextures()
 	_loadedTextures.clear();
 }
 
-void RenderSDL::StartRender()
+void RenderSDL::StartRender(double frameDelta)
 {
+	_frameDelta = frameDelta;
 	SDL_SetRenderDrawColor(_renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderClear(_renderer);
 	SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_BLEND);

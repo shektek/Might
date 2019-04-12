@@ -28,6 +28,8 @@ class RenderSDL
 		int _windowHeight;
 		int _xGridSpacing;
 		int _yGridSpacing;
+
+		double _frameDelta;
 		SDL_Renderer *_renderer;
 		SDL_Window *_window;
 		SDL_Surface *_backgroundSurface;
@@ -42,7 +44,7 @@ class RenderSDL
 		RenderSDL(SDL_Window *win, int windowWidth, int windowHeight);
 		virtual ~RenderSDL();
 
-		void StartRender();
+		void StartRender(double frameDelta);
 		void RenderBorders();
 		void RenderUnitRoster();
 		void RenderWorldInfo();

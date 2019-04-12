@@ -1,6 +1,4 @@
 TODO
--Move the navigable grid generation out of SDLHost::Exec so it's only processed once
--Get frame delta for rendering
--Click to move a unit
+-Investigate GetContainingTile, it seems to incorrectly detect unit target location
 -Use flow path to generate navigable grid
 -Fix the sprite scale/location
