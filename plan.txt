@@ -1,4 +1,8 @@
 TODO
--Investigate GetContainingTile, it seems to incorrectly detect unit target location
+-Add attacks
+-Add animation
+-Add unit stacks
+-Add factions and unit types
+-Add UI elements to display unit info
 -Use flow path to generate navigable grid
 -Fix the sprite scale/location
