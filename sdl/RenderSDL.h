@@ -56,6 +56,8 @@ class RenderSDL
 		void RenderSelectionHighlight(BattleMap *map, Point2D position);
 		void RenderMouseHover(BattleMap *map, int mouseX, int mouseY);
 		void FinishRender();
+
+		void ScreenspaceToMapspace(int *x, int *y);
 };
 
 #endif

@@ -186,7 +186,6 @@ void RenderSDL::RenderRightPlayer(Player *player)
 	}
 }
 
-//TODO: take the bits from the Render Player functions above that render a unit
 void RenderSDL::RenderUnit(Unit *unit, SDL_RendererFlip sdlFlip)
 {
 	char buf[256] = {0};
@@ -229,4 +228,10 @@ void RenderSDL::RenderMouseHover(BattleMap *map, int mouseX, int mouseY)
 void RenderSDL::FinishRender()
 {
 	SDL_RenderPresent(_renderer);
+}
+
+void RenderSDL::ScreenspaceToMapspace(int *x, int *y)
+{
+	*x -= _viewportOriginX;
+	*y -= _viewportOriginY;
 }

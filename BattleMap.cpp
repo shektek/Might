@@ -371,23 +371,23 @@ Tile *BattleMap::GetContainingTile(Point2D position)
 
 OrdinalPosition BattleMap::GetArrayLocation(Point2D position)
 {
-    OrdinalPosition result;
-    result.column = result.row = -1;
+	OrdinalPosition result;
+	result.column = result.row = -1;
 
-    for(unsigned int i = 0; i < _map.size(); i++)
-    {
-        for(unsigned int j = 0; j < _map[i].size(); j++)
-        {
-            if(_map[i][j].ContainsPoint(position))
-            {
-                result.column = i;
-                result.row = j;
-                return result;
-            }
-        }
-    }
+	for(unsigned int i = 0; i < _map.size(); i++)
+	{
+		for(unsigned int j = 0; j < _map[i].size(); j++)
+		{
+			if(_map[i][j].ContainsPoint(position))
+			{
+                		result.column = i;
+                		result.row = j;
+                		return result;
+			}
+		}
+	}
 
-    return result;
+	return result;
 }
 
 Tile *BattleMap::GetTile(short column, short row)
@@ -418,7 +418,7 @@ void BattleMap::MoveUnitToPosition(Unit *unit, short column, short row)
 
 		OrdinalPosition oldPos = GetArrayLocation(Point2D(oldx, oldy));
 
-		if(oldPos.column != column && oldPos.row != row)
+		if(oldPos.column != column || oldPos.row != row)
 		{
 			_map[oldPos.column][oldPos.row].Occupied = false;
 			_map[oldPos.column][oldPos.row].Occupier = nullptr;
@@ -431,13 +431,13 @@ void BattleMap::MoveUnitToPosition(Unit *unit, short column, short row)
 
 void BattleMap::MoveUnitToPosition(Unit *unit, Point2D position)
 {
-    if(unit != nullptr)
-    {
-        OrdinalPosition pos = GetArrayLocation(position);
+	if(unit != nullptr)
+	{
+		OrdinalPosition pos = GetArrayLocation(position);
 
-        if(pos.column != -1 && pos.row != -1)
-            MoveUnitToPosition(unit, pos.column, pos.row);
-    }
+		if(pos.column != -1 && pos.row != -1)
+			MoveUnitToPosition(unit, pos.column, pos.row);
+	}
 }
 
 

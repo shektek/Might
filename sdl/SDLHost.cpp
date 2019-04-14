@@ -24,7 +24,6 @@ bool SDLHost::Init(int argc, char **argv)
 
 	return _running;
 }
-#include <cstdio>
 
 bool SDLHost::HandleEvents(GameMaster *game, Unit *selectedUnit)
 {
@@ -49,7 +48,7 @@ bool SDLHost::HandleEvents(GameMaster *game, Unit *selectedUnit)
 		{
 			int x, y;
 			SDL_GetMouseState(&x, &y);
-			printf("moving to %d %d\n", x, y);
+			_renderSdl->ScreenspaceToMapspace(&x, &y);
 			map->MoveUnitToPosition(selectedUnit, Point2D(x, y));
 		}
 	}
