@@ -298,7 +298,7 @@ void BattleMap::ArrangeUnitsDefault(Army *targetArmy, short column)
 		if(!_map[column][j].Occupied)
 		{
 			auto pos = _map[column][j].GlobalBottomLeft();
-			targetArmy->GetUnitAt(i)->Position = pos;
+			targetArmy->GetUnitAt(i)->SetPosition(pos);
 			_map[column][j].Occupied = true;
 			_map[column][j].Occupier = targetArmy->GetUnitAt(i);
 		}
@@ -404,17 +404,19 @@ void BattleMap::RemoveUnitPiece(Unit *unit)
 {
     if(unit != nullptr)
     {
-        _map[unit->Position.x][unit->Position.y].Occupied = false;
-        _map[unit->Position.x][unit->Position.y].Occupier = nullptr;
+	Point2D pos = unit->GetPosition();
+        _map[pos.x][pos.y].Occupied = false;
+        _map[pos.x][pos.y].Occupier = nullptr;
     }
 }
 
+//Move a unit to a specific cell
 void BattleMap::MoveUnitToPosition(Unit *unit, short column, short row)
 {
 	if(unit != nullptr && IsTileAccessible(column, row))
 	{
-		short oldx = unit->Position.x;
-		short oldy = unit->Position.y;
+		short oldx = unit->GetPosition().x;
+		short oldy = unit->GetPosition().y;
 
 		OrdinalPosition oldPos = GetArrayLocation(Point2D(oldx, oldy));
 
@@ -422,21 +424,28 @@ void BattleMap::MoveUnitToPosition(Unit *unit, short column, short row)
 		{
 			_map[oldPos.column][oldPos.row].Occupied = false;
 			_map[oldPos.column][oldPos.row].Occupier = nullptr;
-			unit->Position = _map[column][row].GlobalBottomLeft();
+			unit->SetPosition(_map[column][row].GlobalBottomLeft());
 			_map[column][row].Occupied = true;
 			_map[column][row].Occupier = unit;
 		}
 	}
 }
 
+//Move a unit to a specific position
+//Different to the above as it can result in the sprite shifting within a cell
 void BattleMap::MoveUnitToPosition(Unit *unit, Point2D position)
 {
 	if(unit != nullptr)
 	{
 		OrdinalPosition pos = GetArrayLocation(position);
 
-		if(pos.column != -1 && pos.row != -1)
-			MoveUnitToPosition(unit, pos.column, pos.row);
+		if(IsTileAccessible(pos.column, pos.row))
+		{
+			unit->SetPosition(position);
+
+			//don't reset these if it's the same
+			if(oldPos.column != column
+		}
 	}
 }
 

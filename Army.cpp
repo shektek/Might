@@ -43,7 +43,7 @@ void Army::RemoveUnit(Unit *unit)
 {
     for(unsigned int i = 0; i < _units.size(); i++)
 	{
-		if(_units[i]->Name == unit->Name)
+		if(_units[i]->GetName() == unit->GetName() && _units[i]->GetPosition().x == unit->GetPosition().x && _units[i]->GetPosition().y == unit->GetPosition().y)
 		{
 			delete _units[i];
 			_units.erase(_units.begin() + i);
@@ -62,9 +62,9 @@ bool Army::FindUnit(Unit *unit)
 {
 	bool found = false;
 
-    for(unsigned int i = 0; i < _units.size(); i++)
+	for(unsigned int i = 0; i < _units.size(); i++)
 	{
-		if(_units[i]->Name == unit->Name)
+		if(_units[i]->GetName() == unit->GetName() && _units[i]->GetPosition().x == unit->GetPosition().x && _units[i]->GetPosition().y == unit->GetPosition().y)
 		{
 			found = true;
 			break;
@@ -77,16 +77,16 @@ bool Army::FindUnit(Unit *unit)
 void Army::DeselectAll()
 {
 	for(Unit *unit : _units)
-		unit->IsSelected = false;
+		unit->Deselect();
 }
 
 void Army::SelectUnit(Unit *unit)
 {
-    for(unsigned int i = 0; i < _units.size(); i++)
+	for(unsigned int i = 0; i < _units.size(); i++)
 	{
-		if(_units[i]->Name == unit->Name)
+		if(_units[i]->GetName() == unit->GetName() && _units[i]->GetPosition().x == unit->GetPosition().x && _units[i]->GetPosition().y == unit->GetPosition().y)
 		{
-			_units[i]->IsSelected = true;
+			_units[i]->Select();
 		}
 	}
 }

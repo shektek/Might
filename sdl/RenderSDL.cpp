@@ -6,6 +6,7 @@ const char *battleBgImg = "field.jpg";
 const char *borderHorImg = "simpleborder_hor.gif";
 const char *borderVerImg = "simpleborder_ver.gif";
 const char *swordsmanImg = "swordsman.gif";
+const char *savageImg = "savage.gif";
 
 RenderSDL::RenderSDL(SDL_Window *win, int windowWidth, int windowHeight)
 {
