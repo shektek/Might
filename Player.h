@@ -4,6 +4,8 @@
 #include <string>
 #include "Army.h"
 
+//TODO: Finish and refactor
+
 class Player
 {
 	public:
@@ -11,6 +13,8 @@ class Player
 		std::string Name;
 
 		Player(std::string name, Army *army);
+
+		std::string	GetName() { return Name; }
 };
 
 #endif

@@ -89,7 +89,7 @@ void ConsoleHost::Exec(GameMaster *game)
             for(unsigned int i = 0; i < sortedUnits.size(); i++)
             {
                 _game->SelectUnit(sortedUnits[i]);
-                NavigableGrid submap = map.CreateFloodFillSubmap(sortedUnits[i]->Position, sortedUnits[i]->Speed);
+                NavigableGrid submap = map.CreateFloodFillSubmap(sortedUnits[i]->GetPosition(), sortedUnits[i]->GetRemainingMovement());
 
                 _consoleRender->DrawMap(&map);
                 _consoleRender->DrawMapHighlights(&submap);

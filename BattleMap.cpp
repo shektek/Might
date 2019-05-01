@@ -431,7 +431,7 @@ void BattleMap::MoveUnitToPosition(Unit *unit, short column, short row)
 	}
 }
 
-//Move a unit to a specific position
+//Move a unit to a specific point, constrained to accessible cells
 //Different to the above as it can result in the sprite shifting within a cell
 void BattleMap::MoveUnitToPosition(Unit *unit, Point2D position)
 {
@@ -443,8 +443,19 @@ void BattleMap::MoveUnitToPosition(Unit *unit, Point2D position)
 		{
 			unit->SetPosition(position);
 
+			short oldx = unit->GetPosition().x;
+			short oldy = unit->GetPosition().y;
+
+			OrdinalPosition oldPos = GetArrayLocation(Point2D(oldx, oldy));
+
 			//don't reset these if it's the same
-			if(oldPos.column != column
+			if(oldPos.column != pos.column || oldPos.row != pos.row)
+			{
+				_map[oldPos.column][oldPos.row].Occupied = false;
+				_map[oldPos.column][oldPos.row].Occupier = nullptr;
+				_map[pos.column][pos.row].Occupied = true;
+				_map[pos.column][pos.row].Occupier = unit;
+			}
 		}
 	}
 }
@@ -459,7 +470,7 @@ void BattleMap::RescaleTiles(short newWidth, short newHeight)
 			_map[i][j].SetSize(newWidth, newHeight);
 			_map[i][j].SetPosition(i * newWidth, j * newHeight);
 			if(_map[i][j].Occupier != nullptr)
-				_map[i][j].Occupier->Position = _map[i][j].GlobalBottomLeft();
+				_map[i][j].Occupier->SetPosition(_map[i][j].GlobalBottomLeft());
 		}
 	}
 }

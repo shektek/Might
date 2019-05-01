@@ -68,7 +68,7 @@ void RenderConsole::DrawMapHighlights(NavigableGrid *submap)
             int colour = COLOUR_SELECTEDUNIT;
             if(floodtile->prev != nullptr)
                 colour = COLOUR_DAMAGEDUNIT;
-            if(floodtile->tile->Occupied && !floodtile->tile->Occupier->IsSelected)
+            if(floodtile->tile->Occupied && !floodtile->tile->Occupier->IsSelected())
                 colour = GetUnitColour(x, y);
 
             wattron(_window, COLOR_PAIR(colour));
@@ -140,7 +140,7 @@ char RenderConsole::GetUnitShape(int x, int y)
 	char result = 'O';
 
     if(target != nullptr)
-        result = target->Hitpoints <= 0 ? 'x' : result;
+        result = target->IsDead() ? 'x' : result;
 
     return result;
 }
@@ -153,9 +153,9 @@ int RenderConsole::GetUnitColour(int x, int y)
 
     if(target != nullptr)
     {
-        result = target->MaxHitpoints > target->Hitpoints ? COLOUR_DAMAGEDUNIT : result;
-        result = target->IsSelected ? COLOUR_SELECTEDUNIT : result;
-        result = target->Hitpoints <= 0 ? COLOUR_DEADUNIT : result;
+        result = target->GetMaxHitpoints() > target->GetHitpoints() ? COLOUR_DAMAGEDUNIT : result;
+        result = target->IsSelected() ? COLOUR_SELECTEDUNIT : result;
+        result = target->IsDead() ? COLOUR_DEADUNIT : result;
     }
 
 	return result;
@@ -163,7 +163,7 @@ int RenderConsole::GetUnitColour(int x, int y)
 
 void RenderConsole::DrawPlayerUnitInfo(Player *player, Unit *unit)
 {
-    mvwprintw(_window, 19, 1, "PLAYER %s    ", player->Name.c_str());
-    mvwprintw(_window, 20, 1, "UNIT %s      ", unit->Name.c_str());
-    mvwprintw(_window, 21, 1, "Speed: %d | Attack: %d    ", unit->Speed, unit->PrimaryAttack);
+    mvwprintw(_window, 19, 1, "PLAYER %s    ", player->GetName().c_str());
+    mvwprintw(_window, 20, 1, "UNIT %s      ", unit->GetName().c_str());
+    mvwprintw(_window, 21, 1, "Speed: %d | Attack: %d    ", unit->GetSpeed(), unit->GetPrimaryAttack());
 }

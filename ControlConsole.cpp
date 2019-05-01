@@ -34,7 +34,7 @@ bool ControlConsole::ProcessCommand(BattleMap *map, Unit *selectedUnit, char *cm
                 }
             }
 
-            Tile *unitStart = map->GetTile(selectedUnit->Position.x, selectedUnit->Position.y);
+            Tile *unitStart = map->GetTile(selectedUnit->GetPosition().x, selectedUnit->GetPosition().y);
             Tile *unitEnd = map->GetTile(tX, tY);
 
 
@@ -66,7 +66,7 @@ bool ControlConsole::ProcessCommand(BattleMap *map, Unit *selectedUnit, char *cm
                 double dy = unitStart->GlobalBottomLeft().y - unitEnd->GlobalBottomLeft().y;
                 double distance = sqrt((dx*dx) + (dy*dy));
 
-                if (distance <= selectedUnit->Speed)
+                if (distance <= selectedUnit->GetRemainingMovement())
                 {
                     map->MoveUnitToPosition(selectedUnit, tX, tY);
                 }
@@ -83,7 +83,7 @@ bool ControlConsole::ProcessCommand(BattleMap *map, Unit *selectedUnit, char *cm
 
 			heAttac->AttackUnit(heProtec);
 			//TODO: this actually needs to be handled elsewhere
-			if(heProtec->Hitpoints <= 0)
+			if(heProtec->IsDead())
 			{
 				Army *army = map->GetOwningArmy(heProtec);
 				if(army != nullptr)

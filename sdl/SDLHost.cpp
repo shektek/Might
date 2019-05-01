@@ -83,12 +83,12 @@ void SDLHost::Exec(GameMaster *game)
 		SDL_GetMouseState(&mousex, &mousey);
 
 		if(lastSelected != selectedUnit)
-			submap = map.CreateFloodFillSubmap(selectedUnit->Position, selectedUnit->Speed);
+			submap = map.CreateFloodFillSubmap(selectedUnit->GetPosition(), selectedUnit->GetRemainingMovement());
 
 		_renderSdl->StartRender(frameDelta);
 		_renderSdl->RenderMap(&map);
 		_renderSdl->RenderSubmap(&submap);
-		_renderSdl->RenderSelectionHighlight(&map, selectedUnit->Position);
+		_renderSdl->RenderSelectionHighlight(&map, selectedUnit->GetPosition());
 		_renderSdl->RenderLeftPlayer(_game->GetLeftPlayer());
 		_renderSdl->RenderRightPlayer(_game->GetRightPlayer());
 		_renderSdl->RenderBorders();

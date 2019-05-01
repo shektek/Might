@@ -99,9 +99,9 @@ std::vector<Player*> GameMaster::GetInitiativeOrder()
 void GameMaster::SelectUnit(Unit *unit)
 {
 	if(_currentSelected != nullptr)
-		_currentSelected->IsSelected = false;
+		_currentSelected->Deselect();
 	_previousSelected = _currentSelected;
-	unit->IsSelected = true;
+	unit->Select();
 	_currentSelected = unit;
 }
 
@@ -112,10 +112,13 @@ void GameMaster::StepRound()
 	//get the next piece to move, switching players if necessary
 	if(_currentSelected == _current->army->GetUnitAt(_current->army->GetUnitCount()-1))
 	{
+		//switch players
 		if(_current == _left)
 			_current = _right;
 		else
 			_current = _left;
+
+		//TODO: Call TurnReset() on all units in this army
 
 		SelectUnit(_current->army->GetUnitAt(0));
 	}
