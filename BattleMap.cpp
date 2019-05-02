@@ -441,10 +441,10 @@ void BattleMap::MoveUnitToPosition(Unit *unit, Point2D position)
 
 		if(IsTileAccessible(pos.column, pos.row))
 		{
-			unit->SetPosition(position);
-
 			short oldx = unit->GetPosition().x;
 			short oldy = unit->GetPosition().y;
+
+			unit->SetPosition(position);
 
 			OrdinalPosition oldPos = GetArrayLocation(Point2D(oldx, oldy));
 
