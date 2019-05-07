@@ -56,8 +56,53 @@ bool SDLHost::HandleEvents(GameMaster *game, Unit *selectedUnit)
 	return result;
 }
 
+#include "AnimatedImage.h"
+
+void SDLHost::Test()
+{
+	AnimatedImage animTest;
+	ImageCache tempCache;
+	SDL_Surface *swordsman = tempCache.GetImage("/home/luke/src/might/data/images/swordsman.gif");
+	SDL_Surface *savage = tempCache.GetImage("/home/luke/src/might/data/images/savage.gif");
+	animTest.AddSurface(swordsman);
+	animTest.AddSurface(savage);
+
+	SDL_Surface *bgs = tempCache.GetImage("/home/luke/src/might/data/images/field.jpg");
+	auto bgt = SDL_CreateTextureFromSurface(_renderSdl->GetRenderer(), bgs);
+
+	unsigned int frameStart = 0, frameEnd = SDL_GetTicks(), frameDelta = 0, frameTotal = 0;
+	while(true)
+	{
+		frameStart = SDL_GetTicks();
+		frameDelta = frameEnd - frameStart;
+
+		_renderSdl->StartRender((double)frameDelta);
+		SDL_Surface *s = nullptr;
+		SDL_Rect *r = nullptr;
+
+		animTest.GetCurrentFrame(s, r);
+
+		SDL_Texture *t = _renderSdl->GetTexture(s);
+		SDL_Rect posr {0, 0, 128, 128};
+
+		SDL_RenderCopy(_renderSdl->GetRenderer(), bgt, NULL, NULL);
+
+		SDL_RenderCopyEx(_renderSdl->GetRenderer(), t, r, &posr, 0, NULL, SDL_FLIP_NONE);
+
+		_renderSdl->FinishRender();
+
+		frameEnd = SDL_GetTicks();
+		frameTotal += frameDelta + 1;
+
+		if(frameTotal % 500 == 0)
+			animTest.Continue();
+	}
+}
+
 void SDLHost::Exec(GameMaster *game)
 {
+	Test();
+
 	_game = game;
 
 	_game->AddPlayer(new Player("leftplayer", ArmyFactory::CreateTestingArmy(6)));

@@ -37,7 +37,6 @@ class RenderSDL
 		ImageCache _images;
 		std::map<SDL_Surface*, SDL_Texture *> _loadedTextures;
 
-		SDL_Texture *GetTexture(SDL_Surface *surface);
 		void ClearTextures();
 
 	public:
@@ -58,6 +57,9 @@ class RenderSDL
 		void FinishRender();
 
 		void ScreenspaceToMapspace(int *x, int *y);
+		SDL_Texture *GetTexture(SDL_Surface *surface);
+
+		SDL_Renderer *GetRenderer() { return _renderer; } //temp
 };
 
 #endif

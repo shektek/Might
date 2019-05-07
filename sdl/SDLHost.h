@@ -17,6 +17,7 @@ class SDLHost : public AppHost
 		int _mapHeight;
 
 		bool HandleEvents(GameMaster *game, Unit *selectedUnit);
+		void Test();
 	public:
 		SDLHost();
 		virtual ~SDLHost();

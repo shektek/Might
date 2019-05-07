@@ -12,16 +12,18 @@ class Army
 	 */
 	private:
 		std::vector<Unit*> _units;
+		std::string _name;
+
 
 	public:
 		Army();
+		Army(std::string name);
 		Army(const Army &other);
 		~Army();
 
 		Army &operator=(const Army &other);
 
-		std::string Name;
-
+		std::string GetName() { return _name; }
 		int GetUnitCount() { return _units.size(); }
 		Unit *GetUnitAt(int index);
 		void RemoveUnit(Unit *unit);

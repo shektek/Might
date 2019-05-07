@@ -189,8 +189,6 @@ void RenderSDL::RenderRightPlayer(Player *player)
 
 void RenderSDL::RenderUnit(Unit *unit, SDL_RendererFlip sdlFlip)
 {
-	char buf[256] = {0};
-//	sprintf(buf, "%s%s", imagesDir, swordsmanImg);
 	SDL_Surface *s = _images.GetImage(unit->GetImageFile().c_str());
 	SDL_Texture *t = GetTexture(s);
 	SDL_Rect rect { unit->GetPosition().x, unit->GetPosition().y, 128, 128 };
