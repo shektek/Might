@@ -30,7 +30,9 @@ bool SDLHost::HandleEvents(GameMaster *game, Unit *selectedUnit)
 	bool result = true;
 	SDL_Event e;
 
-	BattleMap *map = game->GetBattleMap();
+	BattleMap *map = nullptr;
+	if(game)
+		map = game->GetBattleMap();
 
 	while(SDL_PollEvent(&e))
 	{
@@ -40,16 +42,19 @@ bool SDLHost::HandleEvents(GameMaster *game, Unit *selectedUnit)
 		{
 			if(e.key.keysym.sym == SDLK_SPACE)
 			{
-				//maybe check which key first
-				game->StepRound();
+				if(game)
+					game->StepRound();
 			}
 		}
 		if(e.type == SDL_MOUSEBUTTONUP)
 		{
-			int x, y;
-			SDL_GetMouseState(&x, &y);
-			_renderSdl->ScreenspaceToMapspace(&x, &y);
-			map->MoveUnitToPosition(selectedUnit, Point2D(x, y));
+			if(map)
+			{
+				int x, y;
+				SDL_GetMouseState(&x, &y);
+				_renderSdl->ScreenspaceToMapspace(&x, &y);
+				map->MoveUnitToPosition(selectedUnit, Point2D(x, y));
+			}
 		}
 	}
 
@@ -64,17 +69,24 @@ void SDLHost::Test()
 	ImageCache tempCache;
 	SDL_Surface *swordsman = tempCache.GetImage("/home/luke/src/might/data/images/swordsman.gif");
 	SDL_Surface *savage = tempCache.GetImage("/home/luke/src/might/data/images/savage.gif");
-	animTest.AddSurface(swordsman);
-	animTest.AddSurface(savage);
+	SDL_Surface *frmtst = tempCache.GetImage("/home/luke/src/might/data/images/frametest.gif");
+	//animTest.AddSurface(swordsman);
+	//animTest.AddSurface(savage);
+	animTest.AddSurface(frmtst);
+	animTest.AddFrame(SDL_Rect{0, 0, 127, 127});
+	animTest.AddFrame(SDL_Rect{129, 0, 127, 127});
+	animTest.AddFrame(SDL_Rect{258, 0, 127, 127});
 
 	SDL_Surface *bgs = tempCache.GetImage("/home/luke/src/might/data/images/field.jpg");
 	auto bgt = SDL_CreateTextureFromSurface(_renderSdl->GetRenderer(), bgs);
 
 	unsigned int frameStart = 0, frameEnd = SDL_GetTicks(), frameDelta = 0, frameTotal = 0;
-	while(true)
+	while(_running)
 	{
 		frameStart = SDL_GetTicks();
 		frameDelta = frameEnd - frameStart;
+
+		_running = HandleEvents(nullptr, nullptr);
 
 		_renderSdl->StartRender((double)frameDelta);
 		SDL_Surface *s = nullptr;
