@@ -20,9 +20,9 @@ class AnimatedImage
 		~AnimatedImage();
 
 		//Get a frame rectangle and the surface it relates to
-		void	GetCurrentFrame(SDL_Surface *&srf, SDL_Rect *frm);
-		void	GetFirstFrame(SDL_Surface *&srf, SDL_Rect *frm);
-		void	GetLastFrame(SDL_Surface *&srf, SDL_Rect *frm);
+		void	GetCurrentFrame(SDL_Surface *&srf, SDL_Rect *&frm);
+		void	GetFirstFrame(SDL_Surface *&srf, SDL_Rect *&frm);
+		void	GetLastFrame(SDL_Surface *&srf, SDL_Rect *&frm);
 
 		//Iterate forward or backwawrd through the surface/frame collections
 		void 	Continue();

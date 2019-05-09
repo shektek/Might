@@ -70,8 +70,8 @@ void SDLHost::Test()
 	SDL_Surface *swordsman = tempCache.GetImage("/home/luke/src/might/data/images/swordsman.gif");
 	SDL_Surface *savage = tempCache.GetImage("/home/luke/src/might/data/images/savage.gif");
 	SDL_Surface *frmtst = tempCache.GetImage("/home/luke/src/might/data/images/frametest.gif");
-	//animTest.AddSurface(swordsman);
-	//animTest.AddSurface(savage);
+	animTest.AddSurface(swordsman);
+	animTest.AddSurface(savage);
 	animTest.AddSurface(frmtst);
 	animTest.AddFrame(SDL_Rect{0, 0, 127, 127});
 	animTest.AddFrame(SDL_Rect{129, 0, 127, 127});
@@ -79,6 +79,10 @@ void SDLHost::Test()
 
 	SDL_Surface *bgs = tempCache.GetImage("/home/luke/src/might/data/images/field.jpg");
 	auto bgt = SDL_CreateTextureFromSurface(_renderSdl->GetRenderer(), bgs);
+
+	SDL_Surface *seet = nullptr;
+	SDL_Rect *reet = nullptr;
+	animTest.GetCurrentFrame(seet, reet);
 
 	unsigned int frameStart = 0, frameEnd = SDL_GetTicks(), frameDelta = 0, frameTotal = 0;
 	while(_running)
@@ -107,7 +111,13 @@ void SDLHost::Test()
 		frameTotal += frameDelta + 1;
 
 		if(frameTotal % 500 == 0)
-			animTest.Continue();
+		{
+			frameDelta += 1;
+			if(r)
+				printf("x %d y %d w %d h %d\n", r->x, r->y, r->w, r->h);
+
+			animTest.Rewind();
+		}
 	}
 }
 

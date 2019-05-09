@@ -20,7 +20,7 @@ AnimatedImage::~AnimatedImage()
 	_imageFrames.clear();
 }
 
-void AnimatedImage::GetCurrentFrame(SDL_Surface *&srf, SDL_Rect *frm)
+void AnimatedImage::GetCurrentFrame(SDL_Surface *&srf, SDL_Rect *&frm)
 {
 	if(_imageFrames.size() > 0)
 	{
@@ -41,7 +41,7 @@ void AnimatedImage::GetCurrentFrame(SDL_Surface *&srf, SDL_Rect *frm)
 	}
 }
 
-void AnimatedImage::GetFirstFrame(SDL_Surface *&srf, SDL_Rect *frm)
+void AnimatedImage::GetFirstFrame(SDL_Surface *&srf, SDL_Rect *&frm)
 {
 	if(_imageFrames.size() > 0)
 	{
@@ -59,7 +59,7 @@ void AnimatedImage::GetFirstFrame(SDL_Surface *&srf, SDL_Rect *frm)
 	}
 }
 
-void AnimatedImage::GetLastFrame(SDL_Surface *&srf, SDL_Rect *frm)
+void AnimatedImage::GetLastFrame(SDL_Surface *&srf, SDL_Rect *&frm)
 {
 	if(_imageFrames.size() > 0)
 	{
@@ -99,11 +99,11 @@ void AnimatedImage::Continue()
 
 void AnimatedImage::Rewind()
 {
-	if(_currentFrameSubIndex-1 > 0)
+	if(_currentFrameSubIndex-1 >= 0)
 	{
 		_currentFrameSubIndex--;
 	}
-	else if(_currentFrameSubIndex - 1 <= 0)
+	else if(_currentFrameSubIndex - 1 < 0)
 	{
 		_currentSurfaceIndex--;
 		_currentFrameSubIndex = -1;
