@@ -43,9 +43,8 @@ Army *ArmyFactory::CreateTestingArmy(int unitCount)
         short hpt = 5 + rand()%10;
 	short spd = 4 + rand()%5;
 	short atk = 2 + rand()%10;
-	std::string img = rand()%2 == 0 ? "/home/luke/src/might/data/images/swordsman.gif" : "/home/luke/src/might/data/images/savage.gif";
 
-	Unit *l = new Unit(hpt, spd, atk, atk, lname, Point2D(0,0), img);
+	Unit *l = new Unit(hpt, spd, atk, atk, lname, Point2D(0,0));
 
         ret->AddUnit(l);
     }

@@ -1,12 +1,14 @@
 #ifndef UNIT_H
 #define UNIT_H
 
+#include "UnitClassTypes.h"
 #include "Point2D.h"
 #include <string>
 
 class Unit
 {
-	private:
+	protected:
+		UnitClassType _classType;
 		bool _selected;
 		short _maxHitpoints;
 		short _hitpoints;
@@ -16,15 +18,15 @@ class Unit
 		short _secondaryAttack; //as above
 		std::string _name;
 		Point2D _position;
-		std::string _imageFile;	//this will have to be an ImageCollection containing idle, walk, attack, etc.
+		std::string _portraitFilename;
 
 	public:
 		Unit();
 		Unit(const Unit &other);
 		Unit(std::string name);
-		Unit(short maxHitpoints, short speed, short primaryAttack, short secondaryAttack, std::string name, Point2D startPosition, std::string imageFile);
+		Unit(short maxHitpoints, short speed, short primaryAttack, short secondaryAttack, std::string name, Point2D startPosition, std::string portraitFilename);
 
-		~Unit();
+		virtual ~Unit();
 
 		Unit &operator=(const Unit &other);
 
@@ -38,7 +40,7 @@ class Unit
 		short GetSecondaryAttack() { return _secondaryAttack; }
 		std::string GetName() { return _name; }
 		Point2D GetPosition() { return _position; }
-		std::string GetImageFile() { return _imageFile; }
+		std::string GetPortraitFilename() { return _portraitFilename; }
 
 		void Select() { _selected = true; }
 		void Deselect() { _selected = false; }
@@ -52,8 +54,8 @@ class Unit
 		void SetSecondaryAttack(short newSecondary) { _secondaryAttack = newSecondary; }
 		void SetName(std::string newName) { _name = newName; }
 		void SetPosition(Point2D newPosition) { _position = newPosition; }
+		void SetPortraitFilename() { _portraitFilename = portraitFilename; }
 		void Move(Point2D newPosition, short steps);
-		void SetImageFile(std::string imageFile) { _imageFile = imageFile; }
 
 		short GetSpeedRating();
 		short GetMeleeRating();

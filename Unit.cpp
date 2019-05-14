@@ -2,6 +2,7 @@
 
 Unit::Unit()
 {
+	_classType = U_BASE;
 	_selected = false;
 	_maxHitpoints = _hitpoints = 0;
 	_speed = 0;
@@ -10,7 +11,7 @@ Unit::Unit()
 	_secondaryAttack = 0;
 	_name = "None";
 	_position = Point2D(0,0);
-	_imageFile = "";
+	_portraitFilename = "";
 }
 
 Unit::Unit(std::string name) : Unit()
@@ -20,6 +21,7 @@ Unit::Unit(std::string name) : Unit()
 
 Unit::Unit(const Unit &other)
 {
+	_classType = other._classType;
 	_selected = other._selected;
 	_maxHitpoints = other._maxHitpoints;
 	_hitpoints = other._hitpoints;
@@ -29,11 +31,12 @@ Unit::Unit(const Unit &other)
 	_secondaryAttack = other._secondaryAttack;
 	_position = other._position;
 	_name = other._name;
-	_imageFile = other._imageFile;
+	_portraitFilename = other._portraitFilename;
 }
 
-Unit::Unit(short maxHitpoints, short speed, short primaryAttack, short secondaryAttack, std::string name, Point2D startPosition, std::string imageFile)
+Unit::Unit(short maxHitpoints, short speed, short primaryAttack, short secondaryAttack, std::string name, Point2D startPosition, std::string portraitFilename)
 {
+	_classType = U_BASE;
 	_selected = false;
 	_hitpoints = _maxHitpoints = maxHitpoints;
 	_remainingMovement = _speed = speed;
@@ -41,7 +44,7 @@ Unit::Unit(short maxHitpoints, short speed, short primaryAttack, short secondary
 	_secondaryAttack = secondaryAttack;
 	_name = name;
 	_position = startPosition;
-	_imageFile = imageFile;
+	_portraitFilename = portraitFilename;
 }
 
 Unit::~Unit()
@@ -50,6 +53,7 @@ Unit::~Unit()
 
 Unit &Unit::operator=(const Unit &other)
 {
+	_classType = other._classType;
 	_selected = other._selected;
 	_maxHitpoints = other._maxHitpoints;
 	_hitpoints = other._hitpoints;
@@ -59,7 +63,7 @@ Unit &Unit::operator=(const Unit &other)
 	_secondaryAttack = other._secondaryAttack;
 	_position = other._position;
 	_name = other._name;
-	_imageFile = other._imageFile;
+	_portraitFilename = other._portraitFilename;
 	return *this;
 }
 

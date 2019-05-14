@@ -123,7 +123,7 @@ void SDLHost::Test()
 
 void SDLHost::Exec(GameMaster *game)
 {
-	Test();
+//	Test();
 
 	_game = game;
 
