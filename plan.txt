@@ -17,5 +17,8 @@ UnitType.h      - a template of a unit: attacks, health, portrait, battlefield g
 UnitFactory.h   - functions to create an instance of a unit from a unit type
 Army.h          - a player's deployed army
 ArmyFactory.h   - functions to create an army from some source or random
-Faction.h       - a template of what is available to a faction: heroes, unit types, etc.
+DONE | Faction.h       - a template of what is available to a faction: heroes, unit types, etc.
 Barracks.h      - contains a selection of available units to recruit
+
+	Current bottlenecks:
+ - RenderSDL doesn't have a way to render AnimatedUnit types and needs the UnitConverter

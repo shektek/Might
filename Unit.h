@@ -54,7 +54,7 @@ class Unit
 		void SetSecondaryAttack(short newSecondary) { _secondaryAttack = newSecondary; }
 		void SetName(std::string newName) { _name = newName; }
 		void SetPosition(Point2D newPosition) { _position = newPosition; }
-		void SetPortraitFilename() { _portraitFilename = portraitFilename; }
+		void SetPortraitFilename(std::string portraitFilename) { _portraitFilename = portraitFilename; }
 		void Move(Point2D newPosition, short steps);
 
 		short GetSpeedRating();

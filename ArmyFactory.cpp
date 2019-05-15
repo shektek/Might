@@ -44,7 +44,7 @@ Army *ArmyFactory::CreateTestingArmy(int unitCount)
 	short spd = 4 + rand()%5;
 	short atk = 2 + rand()%10;
 
-	Unit *l = new Unit(hpt, spd, atk, atk, lname, Point2D(0,0));
+	Unit *l = new Unit(hpt, spd, atk, atk, lname, Point2D(0,0), "");
 
         ret->AddUnit(l);
     }
