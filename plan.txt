@@ -12,7 +12,7 @@ TODO
 	--Armies--
 DONE | AnimatedImage.h - a collection of images and frame coordinates, with ways to iterate through them
 DONE | Unit.h          - a deployed unit in an army
-UnitConverter.h	- Convert a standard Unit into an AnimatedUnit by getting the required AnimatedImage sets
+AnimatedUnitFactory.h	- Convert a standard Unit into an AnimatedUnit by getting the required AnimatedImage sets
 UnitType.h      - a template of a unit: attacks, health, portrait, battlefield graphics, etc.
 UnitFactory.h   - functions to create an instance of a unit from a unit type
 Army.h          - a player's deployed army
