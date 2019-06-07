@@ -25,7 +25,7 @@ class AnimatedUnit : public Unit
 	public:
 		AnimatedUnit();
 		AnimatedUnit(const Unit &other);
-		AnimatedUnit(short maxHp, short spd, short prmAtk, short scdAtk, std::string nm, Point2D pos, AnimatedImage idleSet, AnimatedImage moveSet, AnimatedImage attackSet, AnimatedImage dieSet);
+		AnimatedUnit(short maxHp, short spd, short prmAtk, short scdAtk, std::string nm, Point2D pos, std::string portraitFilename, AnimatedImage idleSet, AnimatedImage moveSet, AnimatedImage attackSet, AnimatedImage dieSet);
 
 		~AnimatedUnit();
 

@@ -1,4 +1,5 @@
 #include "RenderSDL.h"
+#include "AnimatedUnitFactory.h"
 #include <cstring>
 
 const char *imagesDir = "/home/luke/src/might/data/images/";
@@ -170,7 +171,11 @@ void RenderSDL::RenderLeftPlayer(Player *player)
 		Unit *unit = player->army->GetUnitAt(i);
 		if(unit != nullptr)
 		{
-			RenderUnit(unit, SDL_FLIP_NONE);
+			if(unit->GetType() == U_ANIMATED)
+			{
+				AnimatedUnit *animated = dynamic_cast<AnimatedUnit*>(unit);
+				RenderUnit(animated, SDL_FLIP_NONE);
+			}
 		}
 	}
 }
@@ -182,18 +187,29 @@ void RenderSDL::RenderRightPlayer(Player *player)
 		Unit *unit = player->army->GetUnitAt(i);
 		if(unit != nullptr)
 		{
-			RenderUnit(unit, SDL_FLIP_HORIZONTAL);
+			if(unit->GetType() == U_ANIMATED)
+			{
+				AnimatedUnit *animated = dynamic_cast<AnimatedUnit*>(unit);
+				RenderUnit(animated, SDL_FLIP_HORIZONTAL);
+			}
 		}
 	}
 }
 
-void RenderSDL::RenderUnit(Unit *unit, SDL_RendererFlip sdlFlip)
+void RenderSDL::RenderUnit(AnimatedUnit *unit, SDL_RendererFlip sdlFlip)
 {
 	//TODO: Make a converter class that will translate Unit into AnimatedUnit, adding the AnimatedImage sets
 	//SDL_Surface *s = _images.GetImage(unit->GetImageFile().c_str());
-	SDL_Texture *t = GetTexture(s);
-	SDL_Rect rect { unit->GetPosition().x, unit->GetPosition().y, 128, 128 };
-	SDL_RenderCopyEx(_renderer, t, NULL, &rect, 0, NULL, sdlFlip);
+
+	AnimatedImage *curImg = unit->GetCurrentAnimation();
+	SDL_Texture *t = nullptr;
+	SDL_Surface *s = nullptr;
+	SDL_Rect *rect = nullptr;
+
+	curImg->GetCurrentFrame(s, rect);
+	t = GetTexture(s);
+
+	SDL_RenderCopyEx(_renderer, t, NULL, rect, 0, NULL, sdlFlip);
 }
 
 void RenderSDL::RenderSelectionHighlight(BattleMap *map, Point2D position)
@@ -235,3 +251,4 @@ void RenderSDL::ScreenspaceToMapspace(int *x, int *y)
 	*x -= _viewportOriginX;
 	*y -= _viewportOriginY;
 }
+

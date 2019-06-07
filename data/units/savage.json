@@ -1,0 +1,32 @@
+{
+	"name": "Savage",
+	"maxhitpoints": 6,
+	"speed": 7,
+	"primaryattack": 2,
+	"secondaryattack": 5,
+	"portraitfile": "/home/luke/src/might/data/images/savage.gif",
+	"moveset": [
+		{
+			"imagefile": "/home/luke/src/might/data/images/frametest.gif",
+			"frames": [
+				{ "x":   0, "y": 0, "w": 127, "h": 127 },
+				{ "x": 128, "y": 0, "w": 127, "h": 127 },
+				{ "x": 256, "y": 0, "w": 127, "h": 127 }
+			]
+		}
+	],
+	"idleset": [
+		{
+			"imagefile": "/home/luke/src/might/data/images/savage.gif",
+			"frames": [
+			]
+		}
+	],
+	"attackset": [
+
+	],
+	"dieset": [
+
+	]
+}
+

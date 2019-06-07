@@ -30,17 +30,18 @@ class Unit
 
 		Unit &operator=(const Unit &other);
 
-		bool IsSelected() { return _selected; }
-		bool IsDead() { return _hitpoints == 0; }
-		short GetMaxHitpoints() { return _maxHitpoints; }
-		short GetHitpoints() { return _hitpoints; }
-		short GetSpeed() { return _speed; }
-		short GetRemainingMovement() { return _remainingMovement; }
-		short GetPrimaryAttack() { return _primaryAttack; }
-		short GetSecondaryAttack() { return _secondaryAttack; }
-		std::string GetName() { return _name; }
-		Point2D GetPosition() { return _position; }
-		std::string GetPortraitFilename() { return _portraitFilename; }
+		UnitClassType GetType() const { return _classType; }
+		bool IsSelected() const { return _selected; }
+		bool IsDead() const { return _hitpoints == 0; }
+		short GetMaxHitpoints() const { return _maxHitpoints; }
+		short GetHitpoints() const { return _hitpoints; }
+		short GetSpeed() const { return _speed; }
+		short GetRemainingMovement() const { return _remainingMovement; }
+		short GetPrimaryAttack() const { return _primaryAttack; }
+		short GetSecondaryAttack() const { return _secondaryAttack; }
+		std::string GetName() const { return _name; }
+		Point2D GetPosition() const { return _position; }
+		std::string GetPortraitFilename() const { return _portraitFilename; }
 
 		void Select() { _selected = true; }
 		void Deselect() { _selected = false; }

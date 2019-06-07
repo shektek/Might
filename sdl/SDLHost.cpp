@@ -1,5 +1,7 @@
 #include "SDLHost.h"
 #include "../ArmyFactory.h"
+#include "AnimatedImage.h"
+#include "AnimatedUnitFactory.h"
 
 SDLHost::SDLHost()
 {
@@ -61,8 +63,6 @@ bool SDLHost::HandleEvents(GameMaster *game, Unit *selectedUnit)
 	return result;
 }
 
-#include "AnimatedImage.h"
-
 void SDLHost::Test()
 {
 	AnimatedImage animTest;
@@ -114,7 +114,9 @@ void SDLHost::Test()
 		{
 			frameDelta += 1;
 			if(r)
+			{
 				printf("x %d y %d w %d h %d\n", r->x, r->y, r->w, r->h);
+			}
 
 			animTest.Rewind();
 		}
@@ -124,11 +126,24 @@ void SDLHost::Test()
 void SDLHost::Exec(GameMaster *game)
 {
 //	Test();
+	ImageCache *imageCache = new ImageCache();
 
 	_game = game;
 
-	_game->AddPlayer(new Player("leftplayer", ArmyFactory::CreateTestingArmy(6)));
-	_game->AddPlayer(new Player("rightplayer", ArmyFactory::CreateTestingArmy(6)));
+	Army *leftArmy = new Army();
+	Army *rightArmy = new Army();
+
+	std::string swordsmanPath = "/home/luke/src/might/units/swordsman.json";
+	std::string savagePath = "/home/luke/src/might/units/savage/json";
+
+	leftArmy->AddUnit(AnimatedUnitFactory::CreateAnimatedUnit(swordsmanPath, imageCache));
+	leftArmy->AddUnit(AnimatedUnitFactory::CreateAnimatedUnit(swordsmanPath, imageCache));
+
+	rightArmy->AddUnit(AnimatedUnitFactory::CreateAnimatedUnit(savagePath, imageCache));
+	rightArmy->AddUnit(AnimatedUnitFactory::CreateAnimatedUnit(savagePath, imageCache));
+
+	_game->AddPlayer(new Player("leftplayer", leftArmy));
+	_game->AddPlayer(new Player("rightplayer", rightArmy));
 
 	BattleMap map(_mapWidth, _mapHeight, _game->GetLeftPlayer()->army, _game->GetRightPlayer()->army);
 	_game->PrepareRound(&map, AS_LEFT_DEFAULT, AS_RIGHT_DEFAULT);

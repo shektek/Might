@@ -1,4 +1,4 @@
-#include "AnimtedUnit.h"
+#include "AnimatedUnit.h"
 
 AnimatedUnit::AnimatedUnit() : Unit()
 {
@@ -9,28 +9,28 @@ AnimatedUnit::AnimatedUnit() : Unit()
 AnimatedUnit::AnimatedUnit(const Unit &other)
 {
 	_classType = U_ANIMATED;
-	_selected = other._selected;
-	_maxHitpoints = other._maxHitpoints;
-	_hitpoints = other._hitpoints;
-	_speed = other._speed;
-	_remainingMovement = other._remainingMovement;
-	_primaryAttack = other._primaryAttack;
-	_secondaryAttack = other._secondaryAttack;
-	_name = other._name;
-	_position = other._position;
+	_selected = other.IsSelected();
+	_maxHitpoints = other.GetMaxHitpoints();
+	_hitpoints = other.GetHitpoints();
+	_speed = other.GetSpeed();
+	_remainingMovement = other.GetRemainingMovement();
+	_primaryAttack = other.GetPrimaryAttack();
+	_secondaryAttack = other.GetSecondaryAttack();
+	_name = other.GetName();
+	_position = other.GetPosition();
 
-	if(other._classType == U_ANIMATED)
+	if(other.GetType() == U_ANIMATED)
 	{
-		_idle = ((AnimatedUnit)other)._idle;
-		_move = ((AnimatedUnit)other)._move;
-		_attack = ((AnimatedUnit)other)._attack;
-		_die = ((AnimatedUnit)other)._die;
-		_current = ((AnimatedUnit)other)._current;
+		_idle = ((AnimatedUnit)other).GetIdleAnimationSet();
+		_move = ((AnimatedUnit)other).GetMoveAnimationSet();
+		_attack = ((AnimatedUnit)other).GetAttackAnimationSet();
+		_die = ((AnimatedUnit)other).GetDieAnimationSet();
+		_current = ((AnimatedUnit)other).GetCurrentAnimation();
 	}
 }
 
-AnimatedUnit::AnimatedUnit(short maxHp, short spd, short prmAtk, short scdAtk, std::string nm, Point2D pos, AnimatedImage idleSet, AnimatedImage mvSet, AnimatedImage atkSet, AnimatedImage dieSet)
-	: Unit(maxHp, spd, prmAtk, scdAtk, nm, pos)
+AnimatedUnit::AnimatedUnit(short maxHp, short spd, short prmAtk, short scdAtk, std::string nm, Point2D pos, std::string portraitFilename, AnimatedImage idleSet, AnimatedImage mvSet, AnimatedImage atkSet, AnimatedImage dieSet)
+	: Unit(maxHp, spd, prmAtk, scdAtk, nm, pos, portraitFilename)
 {
 	_classType = U_ANIMATED;
 	_idle = idleSet;
@@ -40,8 +40,9 @@ AnimatedUnit::AnimatedUnit(short maxHp, short spd, short prmAtk, short scdAtk, s
 	_current = &_idle;
 }
 
-AnimatedUnit::~AnimatedUnit() : ~Unit()
+AnimatedUnit::~AnimatedUnit()
 {
+	//should delete the animation sets?
 }
 
 void AnimatedUnit::SetCurrentAnimation(AnimationState animState)

@@ -1,48 +1,45 @@
 #include "AnimatedUnitFactory.h"
+#include "AnimatedImageFactory.h"
 #include <nlohmann/json.hpp>
 #include <fstream>
-#include <stringstream>
 
 using json = nlohmann::json;
 
-AnimatedUnit *AnimatedUnitFactory::CreateAnimatedUnit(std::string unitSpecFile)
+AnimatedUnit *AnimatedUnitFactory::CreateAnimatedUnit(std::string unitSpecFile, ImageCache *imageCache)
 {
 
 	std::ifstream jsonFile(unitSpecFile);
-	json parsed;
-	jsonFile >> parsed;
+	json j;
+	jsonFile >> j;
 
-	
+	return CreateAnimatedUnit(j, imageCache);
 }
 
-/*
-example JSON unit file
+AnimatedUnit *AnimatedUnitFactory::CreateAnimatedUnit(json jsonTemplate, ImageCache *imageCache)
+{
+	int maxHp = jsonTemplate["maxhitpoints"];
+	int spd = jsonTemplate["speed"];
+	int prmAtk = jsonTemplate["primaryattack"];
+	int scdAtk = jsonTemplate["secondaryattack"];
+	std::string name = jsonTemplate["name"];
+	Point2D pos;
+	std::string portrait = jsonTemplate["portraitfile"];
 
-	{
-		"name": "TestUnit",
-		"maxhitpoints": 10,
-		"speed": 5,
-		"primaryattack": 3,
-		"secondaryattack": 4,
-		"idleset": [
-			{
-				"imagefile": "/home/luke/src/might/data/images/frametest.gif",
-				"frames": [
-					{ "x":   0, "y": 0, "w": 127, "h": 127 },
-					{ "x": 128, "y": 0, "w": 127, "h": 127 },
-					{ "x": 256, "y": 0, "w": 127, "h": 127 }
-				]
-			}
-		],
-		"moveset": [
+	AnimatedImage idleSet = AnimatedImageFactory::CreateAnimatedImage(jsonTemplate["idleset"], imageCache);
+	AnimatedImage moveSet = AnimatedImageFactory::CreateAnimatedImage(jsonTemplate["moveset"], imageCache);
+	AnimatedImage attackSet = AnimatedImageFactory::CreateAnimatedImage(jsonTemplate["attackset"], imageCache);
+	AnimatedImage dieSet = AnimatedImageFactory::CreateAnimatedImage(jsonTemplate["dieset"], imageCache);
 
-		],
-		"attackset": [
+	return new AnimatedUnit(maxHp, spd, prmAtk, scdAtk, name, pos, portrait, idleSet, moveSet, attackSet, dieSet);
+}
 
-		],
-		"dieset": [
+AnimatedUnit *AnimatedUnitFactory::CreateAnimatedUnit(Unit *other, AnimatedImage idleSet, AnimatedImage moveSet, AnimatedImage attackSet, AnimatedImage dieSet)
+{
+	AnimatedUnit *result = new AnimatedUnit(*other);
+	result->SetIdleAnimationSet(idleSet);
+	result->SetMoveAnimationSet(moveSet);
+	result->SetAttackAnimationSet(attackSet);
+	result->SetDieAnimationSet(dieSet);
 
-		]
-	}
-
-*/
+	return result;
+}
