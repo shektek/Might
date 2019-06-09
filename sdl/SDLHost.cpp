@@ -133,8 +133,8 @@ void SDLHost::Exec(GameMaster *game)
 	Army *leftArmy = new Army();
 	Army *rightArmy = new Army();
 
-	std::string swordsmanPath = "/home/luke/src/might/units/swordsman.json";
-	std::string savagePath = "/home/luke/src/might/units/savage/json";
+	std::string swordsmanPath = "/home/luke/src/might/data/units/swordsman.json";
+	std::string savagePath = "/home/luke/src/might/data/units/savage.json";
 
 	leftArmy->AddUnit(AnimatedUnitFactory::CreateAnimatedUnit(swordsmanPath, imageCache));
 	leftArmy->AddUnit(AnimatedUnitFactory::CreateAnimatedUnit(swordsmanPath, imageCache));

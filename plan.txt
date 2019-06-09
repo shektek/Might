@@ -21,4 +21,4 @@ DONE | Faction.h       - a template of what is available to a faction: heroes, u
 Barracks.h      - contains a selection of available units to recruit
 
 	Current bottlenecks:
- - Unit template JSON needs some fixing
+ - scaling JSON loaded units

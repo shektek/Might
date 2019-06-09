@@ -19,6 +19,7 @@
 		{
 			"imagefile": "/home/luke/src/might/data/images/savage.gif",
 			"frames": [
+				{ "x":  0, "y": 0, "w": 255, "h": 255 }
 			]
 		}
 	],

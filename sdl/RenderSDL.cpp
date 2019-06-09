@@ -198,9 +198,6 @@ void RenderSDL::RenderRightPlayer(Player *player)
 
 void RenderSDL::RenderUnit(AnimatedUnit *unit, SDL_RendererFlip sdlFlip)
 {
-	//TODO: Make a converter class that will translate Unit into AnimatedUnit, adding the AnimatedImage sets
-	//SDL_Surface *s = _images.GetImage(unit->GetImageFile().c_str());
-
 	AnimatedImage *curImg = unit->GetCurrentAnimation();
 	SDL_Texture *t = nullptr;
 	SDL_Surface *s = nullptr;
