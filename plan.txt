@@ -20,5 +20,34 @@ ArmyFactory.h   - functions to create an army from some source or random
 DONE | Faction.h       - a template of what is available to a faction: heroes, unit types, etc.
 Barracks.h      - contains a selection of available units to recruit
 
+	--Attacks--
+
+	--Animation--
+GameState - used by the GameMaster to determine what should be happening on screen
+
+
+Unit control takes place in three states, which must be played in order but can be skipped:
+- hero phase
+	o Cast spells
+	o Skip this unit
+	o Surrender
+	o Retreat
+- move phase
+	o Move to a given square (relies on pathing!)
+	o If an attack order is included, move to the appropriate adjacent square
+- attack phase
+	o While there are available attacks in the sequence (some units can switch targets)
+		apply damage to enemy
+		check if the attack allows a transition back to move phase
+
+Start turn, select unit
+Click location, check validity
+	- Set game state to move phase
+	- iterate the move animation while the unit is not yet at its target
+Move unit
+Execute attack
+	if Enemy isn't dead and can counterattack, call enemy's attack
+		if Unit isn't dead and can riposte, execute riposte
+End turn 
+
 	Current bottlenecks:
- - scaling JSON loaded units

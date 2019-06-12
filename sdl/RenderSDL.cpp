@@ -164,6 +164,7 @@ void RenderSDL::RenderSubmap(NavigableGrid *submap)
 	}
 }
 
+//TODO: This should cache AnimatedUnits in order to prevent casting every frame!
 void RenderSDL::RenderLeftPlayer(Player *player)
 {
 	for(int i = 0; i < player->army->GetUnitCount(); i++)
@@ -201,12 +202,17 @@ void RenderSDL::RenderUnit(AnimatedUnit *unit, SDL_RendererFlip sdlFlip)
 	AnimatedImage *curImg = unit->GetCurrentAnimation();
 	SDL_Texture *t = nullptr;
 	SDL_Surface *s = nullptr;
-	SDL_Rect *rect = nullptr;
+	SDL_Rect *framerect = nullptr;
 
-	curImg->GetCurrentFrame(s, rect);
+	//TODO: Scale these to the tile size
+	int scaledwidth = 96, scaledheight = 96;
+	//adjust to view coordinates, remember that SDLRect draws from topleft so we need to subtract the height
+	SDL_Rect posrect = { _viewportOriginX + unit->GetPosition().x, (_viewportOriginY + unit->GetPosition().y) - scaledheight/2, scaledwidth, scaledheight };
+
+	curImg->GetCurrentFrame(s, framerect);
 	t = GetTexture(s);
 
-	SDL_RenderCopyEx(_renderer, t, NULL, rect, 0, NULL, sdlFlip);
+	SDL_RenderCopyEx(_renderer, t, framerect, &posrect, 0, NULL, sdlFlip);
 }
 
 void RenderSDL::RenderSelectionHighlight(BattleMap *map, Point2D position)
