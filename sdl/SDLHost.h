@@ -16,6 +16,7 @@ class SDLHost : public AppHost
 		int _mapWidth;
 		int _mapHeight;
 
+		void InitDataFolder();
 		bool HandleEvents(GameMaster *game, Unit *selectedUnit);
 		void Test();
 	public:

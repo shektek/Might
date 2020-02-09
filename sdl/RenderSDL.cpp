@@ -2,7 +2,7 @@
 #include "AnimatedUnitFactory.h"
 #include <cstring>
 
-const char *imagesDir = "/home/luke/src/might/data/images/";
+const char *imagesDir = "C:/dev/might/data/images/";
 const char *battleBgImg = "field.jpg";
 const char *borderHorImg = "simpleborder_hor.gif";
 const char *borderVerImg = "simpleborder_ver.gif";

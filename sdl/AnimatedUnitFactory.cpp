@@ -2,6 +2,7 @@
 #include "AnimatedImageFactory.h"
 #include <nlohmann/json.hpp>
 #include <fstream>
+#include "../Tools.h"
 
 using json = nlohmann::json;
 
@@ -23,7 +24,7 @@ AnimatedUnit *AnimatedUnitFactory::CreateAnimatedUnit(json jsonTemplate, ImageCa
 	int scdAtk = jsonTemplate["secondaryattack"];
 	std::string name = jsonTemplate["name"];
 	Point2D pos;
-	std::string portrait = jsonTemplate["portraitfile"];
+	std::string portrait = Tools::GetInstance().ParseResourceString(jsonTemplate["portraitfile"]);
 
 	AnimatedImage idleSet = AnimatedImageFactory::CreateAnimatedImage(jsonTemplate["idleset"], imageCache);
 	AnimatedImage moveSet = AnimatedImageFactory::CreateAnimatedImage(jsonTemplate["moveset"], imageCache);

@@ -7,6 +7,8 @@
 	#define HOST_TYPE SDLHost
 #endif
 
+#include <ctime>
+
 int main(int argc, char **argv)
 {
     srand((unsigned)time(0));

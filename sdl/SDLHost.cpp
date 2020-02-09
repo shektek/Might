@@ -2,9 +2,12 @@
 #include "../ArmyFactory.h"
 #include "AnimatedImage.h"
 #include "AnimatedUnitFactory.h"
+#include "../Tools.h"
 
 SDLHost::SDLHost()
 {
+	_renderSdl = nullptr;
+	_window = nullptr;
 	_running = false;
 	_game = nullptr;
 	_mapWidth = 14;
@@ -18,6 +21,7 @@ SDLHost::~SDLHost()
 
 bool SDLHost::Init(int argc, char **argv)
 {
+	InitDataFolder();
 	_running = (SDL_Init(SDL_INIT_EVERYTHING) == 0);
 	int width = 800;
 	int height = 600;
@@ -25,6 +29,34 @@ bool SDLHost::Init(int argc, char **argv)
 	_renderSdl = new RenderSDL(_window, width, height);
 
 	return _running;
+}
+
+void SDLHost::InitDataFolder()
+{
+	//first try to open the dirs.txt file
+	//if it doesn't exist, create a default one
+	//otherwise just open it and get the absolute folder directory
+
+	FILE* f = fopen("dirs.txt", "r");
+	if (f)
+	{
+		int linenum = 0;
+		char line[1024] = { 0 };
+		while (fgets(line, 1024, f))
+		{
+			switch (linenum)
+			{
+			case 0:
+				Tools::GetInstance().DataDirectory = line;
+				break;
+			}
+
+
+			linenum++;
+		}
+
+		fclose(f);
+	}
 }
 
 bool SDLHost::HandleEvents(GameMaster *game, Unit *selectedUnit)
@@ -67,9 +99,9 @@ void SDLHost::Test()
 {
 	AnimatedImage animTest;
 	ImageCache tempCache;
-	SDL_Surface *swordsman = tempCache.GetImage("/home/luke/src/might/data/images/swordsman.gif");
-	SDL_Surface *savage = tempCache.GetImage("/home/luke/src/might/data/images/savage.gif");
-	SDL_Surface *frmtst = tempCache.GetImage("/home/luke/src/might/data/images/frametest.gif");
+	SDL_Surface *swordsman = tempCache.GetImage(Tools::GetInstance().DataDirectory + "images/swordsman.gif");
+	SDL_Surface *savage = tempCache.GetImage(Tools::GetInstance().DataDirectory + "images/savage.gif");
+	SDL_Surface *frmtst = tempCache.GetImage(Tools::GetInstance().DataDirectory + "images/frametest.gif");
 	animTest.AddSurface(swordsman);
 	animTest.AddSurface(savage);
 	animTest.AddSurface(frmtst);
@@ -77,7 +109,7 @@ void SDLHost::Test()
 	animTest.AddFrame(SDL_Rect{129, 0, 127, 127});
 	animTest.AddFrame(SDL_Rect{258, 0, 127, 127});
 
-	SDL_Surface *bgs = tempCache.GetImage("/home/luke/src/might/data/images/field.jpg");
+	SDL_Surface *bgs = tempCache.GetImage(Tools::GetInstance().DataDirectory + "images/field.jpg");
 	auto bgt = SDL_CreateTextureFromSurface(_renderSdl->GetRenderer(), bgs);
 
 	SDL_Surface *seet = nullptr;
@@ -133,8 +165,8 @@ void SDLHost::Exec(GameMaster *game)
 	Army *leftArmy = new Army();
 	Army *rightArmy = new Army();
 
-	std::string swordsmanPath = "/home/luke/src/might/data/units/swordsman.json";
-	std::string savagePath = "/home/luke/src/might/data/units/savage.json";
+	std::string swordsmanPath = Tools::GetInstance().DataDirectory + "units/swordsman.json";
+	std::string savagePath = Tools::GetInstance().DataDirectory + "units/savage.json";
 
 	leftArmy->AddUnit(AnimatedUnitFactory::CreateAnimatedUnit(swordsmanPath, imageCache));
 	leftArmy->AddUnit(AnimatedUnitFactory::CreateAnimatedUnit(swordsmanPath, imageCache));

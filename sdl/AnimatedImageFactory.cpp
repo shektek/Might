@@ -1,4 +1,5 @@
 #include "AnimatedImageFactory.h"
+#include "../Tools.h"
 
 using json = nlohmann::json;
 
@@ -8,7 +9,8 @@ AnimatedImage AnimatedImageFactory::CreateAnimatedImage(json jsonTemplate, Image
 
 	for (auto &element : jsonTemplate)
 	{
-		result.AddSurface(imageCache->GetImage(element["imagefile"]));
+		std::string imageFile = Tools::GetInstance().ParseResourceString(element["imagefile"]);
+		result.AddSurface(imageCache->GetImage(imageFile));
 		for (auto &frame : element["frames"])
 		{
 			int x = frame["x"];
